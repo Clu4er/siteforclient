@@ -1,0 +1,22 @@
+node_modules/
+.next/
+out/
+dist/
+.vercel/
+.codex/
+
+.env
+.env.local
+.env.*.local
+
+*.zip
+*.rar
+*.7z
+
+# Local legacy leftovers and generated data
+source_zip/
+data/leads.json
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
