@@ -29,7 +29,7 @@ const presets = [
   },
   {
     id: "gpu",
-    label: "GPU / техконтур",
+    label: "GPU / серверная",
     values: {
       hashrate: 300,
       btcRate: 8500000,
@@ -214,12 +214,11 @@ export function MiningHeatCalculator({ defaults }) {
         <div className="calculator-card__intro">
           <span className="eyebrow">Калькулятор</span>
           <h2>
-            Экономика{" "}
-            <span className="text-highlight">отопления на базе майнинга</span>
+            Расчёт <span className="text-highlight">тепла и дохода</span>
           </h2>
           <p>
-            Сценарий расчёта остаётся понятным: TH/s, курс BTC, мощность, цена
-            электричества и ориентир по итогу в рублях.
+            Введите мощность майнера, курс BTC и цену электричества. Калькулятор
+            покажет примерный доход, расход и итог в рублях.
           </p>
         </div>
 
@@ -238,7 +237,7 @@ export function MiningHeatCalculator({ defaults }) {
 
         <div className="form-grid">
           <label>
-            <span>Хешрейт, TH/s</span>
+            <span>Мощность майнера, TH/s</span>
             <input
               type="text"
               inputMode="decimal"
@@ -249,7 +248,7 @@ export function MiningHeatCalculator({ defaults }) {
             />
           </label>
           <label>
-            <span>Курс BTC, ₽</span>
+            <span>Курс BTC</span>
             <input
               type="text"
               inputMode="decimal"
@@ -271,7 +270,7 @@ export function MiningHeatCalculator({ defaults }) {
             />
           </label>
           <label>
-            <span>Стоимость электроэнергии, ₽/кВт·ч</span>
+            <span>Цена электричества</span>
             <input
               type="text"
               inputMode="decimal"
@@ -282,7 +281,7 @@ export function MiningHeatCalculator({ defaults }) {
             />
           </label>
           <label>
-            <span>BTC / TH / сутки</span>
+            <span>BTC на 1 TH/s в день</span>
             <input
               type="text"
               inputMode="decimal"
@@ -293,7 +292,7 @@ export function MiningHeatCalculator({ defaults }) {
             />
           </label>
           <label>
-            <span>КПД утилизации тепла</span>
+            <span>Сколько тепла используем</span>
             <input
               type="text"
               inputMode="decimal"
@@ -307,26 +306,26 @@ export function MiningHeatCalculator({ defaults }) {
 
         <div className="results-grid">
           <article className="result-card">
-            <small>Выручка в сутки</small>
+            <small>Доход от майнинга в день</small>
             <strong>{formatCurrency(revenueDay)}</strong>
           </article>
           <article className="result-card">
-            <small>Электроэнергия в сутки</small>
+            <small>Расход на электричество в день</small>
             <strong>{formatCurrency(powerCostDay)}</strong>
           </article>
           <article className="result-card">
-            <small>Полезное тепло</small>
+            <small>Сколько тепла получилось</small>
             <strong>{formatNumber(usefulHeat, 2)} кВт</strong>
           </article>
           <article className="result-card result-card--accent">
-            <small>Итог в месяц</small>
+            <small>Примерный итог за месяц</small>
             <strong>{formatCurrency(monthlyResult)}</strong>
           </article>
         </div>
 
         <p className="calculator-note">
-          Это ориентир для первого разговора. Для коммерческого решения мы считаем
-          тариф, тип оборудования, сезонность и схему передачи тепла по контурам.
+          Это предварительный расчёт. Точный результат зависит от курса BTC, тарифа на
+          электричество, модели оборудования и условий работы.
         </p>
       </div>
     </section>

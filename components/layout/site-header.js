@@ -21,7 +21,7 @@ export function SiteHeader({ company }) {
           <span className="brand-block__mark">BTC</span>
           <span>
             <strong>{company.name}</strong>
-            <small>тепло + майнинг + инженерия</small>
+            <small>тепло + майнинг</small>
           </span>
         </Link>
 
@@ -42,7 +42,7 @@ export function SiteHeader({ company }) {
             {company.phone}
           </a>
           <Link className="btn btn--primary" href="/kontakty#lead-form">
-            Получить расчёт
+            Рассчитать выгоду
           </Link>
           <button
             type="button"
