@@ -24,6 +24,7 @@
   --radius-lg: 36px;
   --radius: 28px;
   --shell: 1500px;
+  --site-header-height: 5.4rem;
 }
 
 *,
@@ -62,6 +63,12 @@ body {
 
   body.is-mobile-menu-open {
     overflow: hidden;
+  }
+
+  body.is-mobile-menu-open .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    width: 100%;
   }
 }
 
@@ -335,23 +342,34 @@ textarea {
 }
 
 .mobile-panel {
+  position: fixed;
+  top: var(--site-header-height);
+  left: 0;
+  right: 0;
+  z-index: 49;
   max-height: 0;
   overflow: hidden;
   overscroll-behavior: contain;
   background: rgba(6, 16, 24, 0.96);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  transition: max-height 0.28s ease;
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    max-height 0.28s ease,
+    visibility 0.28s ease;
 }
 
 .mobile-panel.is-open {
-  max-height: calc(100dvh - 5.4rem);
+  max-height: calc(100dvh - var(--site-header-height));
   overflow-y: auto;
+  pointer-events: auto;
+  visibility: visible;
   -webkit-overflow-scrolling: touch;
 }
 
 @supports not (height: 100dvh) {
   .mobile-panel.is-open {
-    max-height: calc(100vh - 5.4rem);
+    max-height: calc(100vh - var(--site-header-height));
   }
 }
 
@@ -916,6 +934,11 @@ textarea {
   max-width: 64rem;
 }
 
+.page-hero__copy--wide h1,
+.page-hero__copy--wide p {
+  max-width: none;
+}
+
 .text-highlight {
   color: var(--accent);
 }
@@ -1385,6 +1408,11 @@ body:has(.bearings-page) {
   background: rgba(255, 255, 255, 0.84);
   box-shadow: 0 20px 45px rgba(35, 63, 45, 0.13);
   backdrop-filter: blur(14px);
+}
+
+.bearings-visual .metric-pill--right.bearings-visual__label {
+  right: 1rem;
+  bottom: 1rem;
 }
 
 .bearings-visual__label strong {
@@ -1980,11 +2008,11 @@ body:has(.bearings-page) {
 
   .hero-stage__floating--top {
     top: 1.25rem;
-    right: -1rem;
+    right: 0;
   }
 
   .hero-stage__floating--bottom {
-    left: -1.2rem;
+    left: 0;
     bottom: 1.3rem;
   }
 
@@ -1994,12 +2022,12 @@ body:has(.bearings-page) {
   }
 
   .metric-pill--left {
-    left: -1rem;
+    left: 0;
     top: 5.8rem;
   }
 
   .metric-pill--right {
-    right: -0.5rem;
+    right: 0;
     bottom: 6.8rem;
   }
 
@@ -2081,6 +2109,24 @@ body:has(.bearings-page) {
     min-height: 31rem;
   }
 
+  .hero-stage__floating--top {
+    right: 0;
+  }
+
+  .hero-stage__floating--bottom {
+    left: 0;
+  }
+
+  .metric-pill--left {
+    left: 0;
+  }
+
+  .metric-pill--right {
+    right: 0;
+  }
+}
+
+@media (min-width: 1540px) {
   .hero-stage__floating--top {
     right: -2rem;
   }
