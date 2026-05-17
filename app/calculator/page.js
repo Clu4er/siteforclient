@@ -17,7 +17,7 @@ export const metadata = buildMetadata({
   title: "Калькулятор криптокотла: TH/s, курс BTC, мощность и итог в рублях",
   description:
     "Калькулятор отопления на базе майнинга: TH/s, курс BTC, мощность, стоимость электричества, полезное тепло и ориентир по результату в рублях.",
-  path: "/kalkulyator",
+  path: "/calculator",
   keywords: [
     "калькулятор криптокотла",
     "калькулятор майнинг отопления",
@@ -27,12 +27,12 @@ export const metadata = buildMetadata({
 
 const calculatorBenefits = [
   {
-    title: "Оставили понятную механику",
-    text: "На странице нет лишних абстракций: TH/s, курс BTC, мощность, стоимость кВт·ч и итог в рублях.",
+    title: "Показывает первый ориентир",
+    text: "В расчёте нет лишних абстракций: TH/s, курс BTC, мощность, стоимость кВт·ч и итог в рублях.",
   },
   {
-    title: "Подходит для pre-sale и внутренних расчётов",
-    text: "Калькулятор можно использовать на встречах, в переписке, на созвоне и при первичной квалификации лида.",
+    title: "Помогает подготовить разговор",
+    text: "После расчёта проще обсудить мощность, тариф, полезное тепло и ожидания от проекта.",
   },
   {
     title: "Не заменяет инженерный проект",
@@ -42,25 +42,25 @@ const calculatorBenefits = [
 
 const relatedLinks = [
   {
-    href: "/dlya-doma",
+    href: "/home-heating",
     title: "Перейти в сценарий для дома",
-    text: "Если вы считаете дом, бассейн или тёплый пол, дальше логично перейти в отдельную страницу для частного сегмента.",
+    text: "Если вы считаете дом, бассейн или тёплый пол, дальше логично посмотреть решение для частного объекта.",
   },
   {
-    href: "/dlya-biznesa",
+    href: "/business-heating",
     title: "Перейти в сценарий для бизнеса",
     text: "Для гостиниц, теплиц и коммерческих объектов важны дополнительные вводные по масштабу и эксплуатации.",
   },
   {
-    href: "/sravnenie-s-elektrichestvom",
+    href: "/electric-heating-comparison",
     title: "Сравнить с электричеством",
-    text: "Если объект уже живёт на сети, эта страница помогает перевести цифры в понятный сравнительный сценарий.",
+    text: "Если объект уже отапливается от сети, сравнение поможет спокойнее оценить цифры.",
   },
 ];
 
 export default async function CalculatorPage() {
   const content = await getSiteContent();
-  const breadcrumbs = getBreadcrumbs("/kalkulyator");
+  const breadcrumbs = getBreadcrumbs("/calculator");
 
   return (
     <MarketingShell content={content}>
@@ -70,7 +70,7 @@ export default async function CalculatorPage() {
           name: "Калькулятор отопления на базе майнинга",
           description:
             "Расчёт сценария криптокотла по TH/s, курсу BTC, мощности, тарифу и полезному теплу.",
-          path: "/kalkulyator",
+          path: "/calculator",
           providerName: content.company.name,
         })}
       />
@@ -83,10 +83,9 @@ export default async function CalculatorPage() {
               <span className="eyebrow">Калькулятор</span>
               <h1>Калькулятор криптокотла с итогом в рублях</h1>
               <p>
-                Мы сохранили ровно ту формулу, которая нужна для первого разговора:
+                Введите основные параметры и получите первый ориентир по сценарию:
                 TH/s, курс BTC, мощность, стоимость электричества, полезное тепло и
-                ориентир по экономике. Это удобный мост между интересом и коммерческим
-                предложением.
+                примерный итог в рублях.
               </p>
             </div>
           </div>
@@ -102,8 +101,8 @@ export default async function CalculatorPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Что важно знать"
-              title="Калькулятор усиливает UX, когда честно ограничивает свои обещания"
-              description="Хороший коммерческий калькулятор помогает быстро понять диапазон сценария, но не подменяет полноценный инженерный расчёт объекта."
+              title="Это быстрый расчёт, а не обещание доходности"
+              description="Калькулятор помогает понять порядок цифр. Для решения под объект мы отдельно считаем контуры, сезонность, резерв и схему передачи тепла."
             />
             <FeatureGrid items={calculatorBenefits} />
           </div>
@@ -113,8 +112,8 @@ export default async function CalculatorPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Куда идти дальше"
-              title="Следующие страницы после расчёта"
-              description="После цифр посетитель обычно идёт либо в домашний или бизнес-сценарий, либо в страницу сравнения с электрическим отоплением."
+              title="После расчёта выберите свой сценарий"
+              description="Можно перейти к домашнему или бизнес-решению, а если объект уже топится от сети — сравнить криптокотёл с электрическим отоплением."
             />
             <RelatedLinks items={relatedLinks} />
           </div>
@@ -125,7 +124,7 @@ export default async function CalculatorPage() {
             <PageCta
               title="Нужен расчёт под реальный объект?"
               text="Отправьте вводные. Мы расширим быстрый калькулятор до инженерного сценария с учётом контуров, автоматики, сезонности и роли оборудования в общей системе."
-              primaryHref="/kontakty#lead-form"
+              primaryHref="/contacts#lead-form"
               primaryLabel="Отправить вводные"
               secondaryHref="/faq"
               secondaryLabel="Сначала посмотреть FAQ"
@@ -142,7 +141,7 @@ export default async function CalculatorPage() {
               buttonLabel={content.leadForm.buttonLabel}
             />
             <div className="section-actions">
-              <Link className="btn btn--ghost" href="/kontakty">
+              <Link className="btn btn--ghost" href="/contacts">
                 Перейти в контакты
               </Link>
             </div>

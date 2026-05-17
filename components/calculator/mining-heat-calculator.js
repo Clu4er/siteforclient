@@ -159,6 +159,7 @@ export function MiningHeatCalculator({ defaults }) {
   const revenueDay = form.hashrate * form.btcPerThDay * form.btcRate;
   const powerCostDay = form.powerKw * 24 * form.electricityRate;
   const usefulHeat = form.powerKw * form.heatEfficiency;
+  const revenueMonth = revenueDay * 30;
   const monthlyResult = (revenueDay - powerCostDay) * 30;
 
   const handleChange = (key, rawValue) => {
@@ -306,7 +307,7 @@ export function MiningHeatCalculator({ defaults }) {
         </div>
 
         <div className="results-grid">
-          <article className="result-card">
+          <article className="result-card result-card--revenue-day">
             <small>Выручка в сутки</small>
             <strong>{formatCurrency(revenueDay)}</strong>
           </article>
@@ -314,13 +315,17 @@ export function MiningHeatCalculator({ defaults }) {
             <small>Электроэнергия в сутки</small>
             <strong>{formatCurrency(powerCostDay)}</strong>
           </article>
+          <article className="result-card result-card--accent result-card--net">
+            <small>Итог после расходов на электричество</small>
+            <strong>{formatCurrency(monthlyResult)}</strong>
+          </article>
           <article className="result-card">
             <small>Полезное тепло</small>
             <strong>{formatNumber(usefulHeat, 2)} кВт</strong>
           </article>
-          <article className="result-card result-card--accent">
-            <small>Итог в месяц</small>
-            <strong>{formatCurrency(monthlyResult)}</strong>
+          <article className="result-card result-card--revenue-month">
+            <small>Выручка в месяц</small>
+            <strong>{formatCurrency(revenueMonth)}</strong>
           </article>
         </div>
 

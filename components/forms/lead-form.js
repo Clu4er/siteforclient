@@ -6,9 +6,9 @@ import { useState } from "react";
 const defaultContactInfo = {
   title: "Контактная информация",
   phone: "+7 (903) 328-76-11",
-  email: "hello@cryptoheat.local",
+  email: "Kav-spk@mail.ru",
   telegram: "",
-  whatsapp: "79033287611",
+  whatsapp: "",
   max: "",
   address: "Москва, выезды по России и СНГ",
   hours: "Пн-Сб, 09:00-19:00",
@@ -172,7 +172,7 @@ export function LeadForm({
                 type="email"
                 value={form.email}
                 onChange={(event) => onChange("email", event.target.value)}
-                placeholder="mail@example.com"
+                placeholder="name@example.ru"
               />
             </label>
             <label>
@@ -213,11 +213,11 @@ export function LeadForm({
             <h3>{resolvedContactInfo.title}</h3>
             <div>
               <span>Телефон</span>
-              <a href={`tel:${cleanPhone(resolvedContactInfo.phone)}`}>
+              <a href={`tel:+${cleanPhone(resolvedContactInfo.phone)}`}>
                 {resolvedContactInfo.phone}
               </a>
               {(resolvedContactInfo.secondaryPhones || []).map((phone) => (
-                <a href={`tel:${cleanPhone(phone)}`} key={phone}>
+                <a href={`tel:+${cleanPhone(phone)}`} key={phone}>
                   {phone}
                 </a>
               ))}
@@ -226,14 +226,9 @@ export function LeadForm({
               <span>Email</span>
               <a href={`mailto:${resolvedContactInfo.email}`}>{resolvedContactInfo.email}</a>
             </div>
-            {resolvedContactInfo.whatsapp || resolvedContactInfo.telegram || resolvedContactInfo.max ? (
+            {resolvedContactInfo.telegram || resolvedContactInfo.max ? (
               <div>
                 <span>Мессенджеры</span>
-                {resolvedContactInfo.whatsapp ? (
-                  <a href={`https://wa.me/${cleanPhone(resolvedContactInfo.whatsapp)}`}>
-                    WhatsApp
-                  </a>
-                ) : null}
                 {resolvedContactInfo.telegram ? (
                   <a href={`https://t.me/${String(resolvedContactInfo.telegram).replace("@", "")}`}>
                     Telegram

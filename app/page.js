@@ -15,7 +15,7 @@ import { mediaAssets } from "@/lib/site-assets";
 import { buildMetadata, createFaqSchema, createServiceSchema } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Криптокотлы и отопление на базе майнинга для дома и бизнеса",
+  title: "Криптокотлы и отопление на базе майнинга для дома и бизнеса | BTC-ГРУПП",
   description:
     "Проектируем и внедряем криптокотлы: тепло для дома, бизнеса, бассейнов, теплиц и технологических контуров плюс участие оборудования в сети BTC.",
   path: "/",
@@ -30,21 +30,25 @@ export const metadata = buildMetadata({
 const audienceCards = [
   {
     badge: "B2C",
+    href: "/home-heating",
     title: "Для дома, коттеджа и бассейна",
     text: "Сценарий для домовладельцев, которые хотят сократить чистые расходы на отопление и получить технологичный инженерный контур.",
   },
   {
     badge: "B2B",
+    href: "/business-heating",
     title: "Для бизнеса с постоянным спросом на тепло",
     text: "Гостиницы, теплицы, сервисные зоны, фермы, СТО, цеха и любые объекты, где тепло работает круглый год или сезонно с высокой нагрузкой.",
   },
   {
     badge: "GPU",
+    href: "/gpu-heat-recovery",
     title: "Для вычислительных и GPU-контуров",
     text: "Использование серверного и GPU-тепла для технических задач, ГВС, подогрева воздуха и водяных контуров.",
   },
   {
     badge: "Инженерия",
+    href: "/gibridnoe-otoplenie",
     title: "Для новых и существующих систем",
     text: "Мы проектируем гибридные контуры: криптокотёл может работать вместе с газовым, электрическим или резервным источником тепла.",
   },
@@ -61,7 +65,7 @@ const valueCards = [
   },
   {
     title: "Подходит и для частного сегмента, и для B2B",
-    text: "На одном сайте собрана логика для дома, бизнеса, GPU-площадок и сравнительных сценариев с газом и электричеством.",
+    text: "Можно подобрать сценарий для дома, бизнеса, GPU-площадки или объекта, который сравнивает решение с газом и электричеством.",
   },
 ];
 
@@ -109,12 +113,12 @@ const implementationSteps = [
 
 const comparePreviewLinks = [
   {
-    href: "/sravnenie-s-gazom",
+    href: "/gas-heating-comparison",
     title: "Сравнение с газом",
     text: "Показываем, где криптокотёл дополняет газовый контур, снижает чистую стоимость тепла и где газ остаётся базовым источником.",
   },
   {
-    href: "/sravnenie-s-elektrichestvom",
+    href: "/electric-heating-comparison",
     title: "Сравнение с электричеством",
     text: "Если объект уже греется от сети, криптокотёл помогает превратить часть затрат на кВт·ч в тепло плюс цифровой актив.",
   },
@@ -122,17 +126,17 @@ const comparePreviewLinks = [
 
 const relatedLinks = [
   {
-    href: "/dlya-doma",
+    href: "/home-heating",
     title: "Криптокотёл для дома",
-    text: "Отдельная страница для домовладельцев, тёплых полов, бассейнов и частных объектов.",
+    text: "Решения для домовладельцев, тёплых полов, бассейнов и частных объектов.",
   },
   {
-    href: "/dlya-biznesa",
+    href: "/business-heating",
     title: "Криптокотёл для бизнеса",
     text: "Отели, теплицы, сервис, производство, коммерческие объекты и масштабируемые контуры тепла.",
   },
   {
-    href: "/gpu-otoplenie",
+    href: "/gpu-heat-recovery",
     title: "GPU и утилизация тепла",
     text: "Сценарии для вычислительных площадок, AI-контуров и серверной утилизации тепла.",
   },
@@ -178,20 +182,20 @@ export default async function HomePage() {
               </p>
 
               <div className="hero-copy__actions">
-                <Link className="btn btn--primary" href="/kontakty#lead-form">
+                <Link className="btn btn--primary" href="/contacts#lead-form">
                   {content.hero.primaryCta}
                 </Link>
-                <Link className="btn btn--ghost" href="/kalkulyator">
+                <Link className="btn btn--ghost" href="/calculator">
                   {content.hero.secondaryCta}
                 </Link>
               </div>
 
               <div className="hero-route-cards">
-                <Link className="link-card" href="/dlya-doma">
+                <Link className="link-card" href="/home-heating">
                   <strong>Для дома</strong>
                   <p>Коттеджи, тёплые полы, бассейны, баня и частный комфорт.</p>
                 </Link>
-                <Link className="link-card" href="/dlya-biznesa">
+                <Link className="link-card" href="/business-heating">
                   <strong>Для бизнеса</strong>
                   <p>Гостиницы, теплицы, фермы, сервис и коммерческие объекты.</p>
                 </Link>
@@ -244,7 +248,7 @@ export default async function HomePage() {
             <div className="stat-strip">
               <article>
                 <strong>Дом и бизнес</strong>
-                <span>Одна продуктовая логика для частного и коммерческого сегмента.</span>
+                <span>Подбираем решение и для частных, и для коммерческих объектов.</span>
               </article>
               <article>
                 <strong>Гибридный подход</strong>
@@ -301,12 +305,12 @@ export default async function HomePage() {
                 eyebrow="Сравнение сценариев"
                 title={
                   <>
-                    Отдельные страницы под{" "}
-                    <span className="text-highlight">газ</span> и{" "}
-                    <span className="text-highlight">электричество</span>
+                    Простое сравнение с{" "}
+                    <span className="text-highlight">газом</span> и{" "}
+                    <span className="text-highlight">электричеством</span>
                   </>
                 }
-                description="Пользователь сразу попадает в свой маршрут сравнения, а не читает одну общую страницу с размытыми обещаниями."
+                description="Сравнение помогает быстрее понять, где криптокотёл уместен, а где привычный источник тепла остаётся лучшим вариантом."
               />
             </div>
             <RelatedLinks items={comparePreviewLinks} />
@@ -318,7 +322,7 @@ export default async function HomePage() {
             <SectionHeading
               eyebrow="Сценарии использования"
               title="Коммерческие и частные объекты, где у тепла есть понятная задача"
-              description="Чем стабильнее потребление тепла, тем понятнее экономическая логика проекта. Поэтому коммерческие кейсы и домовые решения живут в одной продуктовой системе, но с разной подачей."
+              description="Чем стабильнее объекту нужно тепло, тем проще посчитать сценарий и честно обсудить пользу решения."
             />
             <FeatureGrid items={sectorCards} columns={4} />
           </div>
@@ -335,7 +339,7 @@ export default async function HomePage() {
             <SectionHeading
               eyebrow="Как внедряем"
               title="Проектный путь от вводных до запуска"
-              description="Коммерческий продукт выигрывает не только картинкой, а предсказуемостью следующего шага. Поэтому на сайте есть чёткий сценарий внедрения."
+              description="Идём по шагам: собираем вводные, считаем нагрузку, подбираем схему и только потом обсуждаем запуск."
             />
             <StepsGrid items={implementationSteps} />
           </div>
@@ -345,8 +349,8 @@ export default async function HomePage() {
           <div className="shell">
             <SectionHeading
               eyebrow="FAQ"
-              title="Вопросы, которые возникают до коммерческого предложения"
-              description="Вместо декоративного FAQ мы оставили вопросы, которые реально влияют на решение: интеграция, шум, сезонность, электричество и сценарий объекта."
+              title="Вопросы, которые возникают до расчёта"
+              description="Коротко отвечаем на вопросы, которые обычно появляются до заявки: интеграция, шум, сезонность, электричество и расчёт."
             />
             <div className="faq-preview">
               {faqPreview.map((item) => (
@@ -367,9 +371,9 @@ export default async function HomePage() {
         <section className="section">
           <div className="shell">
             <SectionHeading
-              eyebrow="Внутренняя перелинковка"
-              title="Многостраничная архитектура под SEO и навигацию"
-              description="Отдельные посадочные страницы усиливают поиск, структурируют коммерческую подачу и помогают пользователю быстро попасть в свой сценарий."
+              eyebrow="Куда перейти дальше"
+              title="Выберите сценарий под свой объект"
+              description="Если вы уже понимаете задачу, переходите сразу в страницу для дома, бизнеса или GPU-контура."
             />
             <RelatedLinks items={relatedLinks} />
           </div>
@@ -380,9 +384,9 @@ export default async function HomePage() {
             <PageCta
               title="Хотите посчитать дом, гостиницу, теплицу или технический контур?"
               text="Оставьте заявку. Мы вернёмся с расчётом по объекту, предложим сценарий интеграции и подскажем, где криптокотёл действительно работает лучше классического отопления."
-              primaryHref="/kontakty#lead-form"
+              primaryHref="/contacts#lead-form"
               primaryLabel="Оставить заявку"
-              secondaryHref="/kalkulyator"
+              secondaryHref="/calculator"
               secondaryLabel="Сначала открыть калькулятор"
             />
           </div>

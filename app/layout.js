@@ -5,11 +5,11 @@ import { getSiteUrl } from "@/lib/site-url";
 export const metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "Криптокотлы и отопление на базе майнинга",
+    default: "Криптокотлы и отопление на базе майнинга | BTC-ГРУПП",
     template: "%s | BTC-ГРУПП",
   },
   description:
-    "Коммерческий сайт о криптокотлах, отоплении на базе майнинга, утилизации тепла и инженерных сценариях для дома, бизнеса и GPU-контуров.",
+    "Проектируем криптокотлы и системы утилизации тепла для дома, бизнеса, бассейнов, теплиц и GPU-контуров.",
   robots: {
     index: true,
     follow: true,

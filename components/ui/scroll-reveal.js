@@ -20,8 +20,6 @@ const revealSelector = [
   ".calculator-card",
   ".bearings-hero__copy",
   ".bearings-visual",
-  ".bearings-section > .bearings-shell",
-  ".bearings-facts article",
   ".bearings-sidebar",
   ".bearings-industries span",
   ".bearings-contact-grid article",

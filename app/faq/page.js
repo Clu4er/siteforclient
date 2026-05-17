@@ -62,9 +62,9 @@ export default async function FaqPage() {
               <span className="eyebrow">FAQ</span>
               <h1>FAQ по криптокотлам и отоплению на базе майнинга</h1>
               <p>
-                Мы убрали декоративные вопросы и оставили те, которые реально мешают
-                принять решение. Эта страница работает и как SEO-вход, и как блок
-                снижения сомнений перед заявкой.
+                Здесь собраны ответы на вопросы, которые обычно появляются до расчёта:
+                как подключается оборудование, насколько оно шумит, что происходит
+                летом и почему калькулятор не является обещанием доходности.
               </p>
             </div>
           </div>
@@ -74,8 +74,8 @@ export default async function FaqPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Что здесь внутри"
-              title="Вопросы сгруппированы вокруг того, что действительно влияет на решение"
-              description="Когда FAQ отвечает на реальные возражения, он лучше работает и на UX, и на коммерческую конверсию."
+              title="Коротко о главном перед заявкой"
+              description="Мы отвечаем простым языком: про подключение, расчёт, шум, сезонность и сценарии для разных объектов."
             />
             <div className="feature-grid feature-grid--3">
               {faqCategories.map((item) => (
@@ -111,9 +111,9 @@ export default async function FaqPage() {
             <PageCta
               title="Остались вопросы по вашему объекту?"
               text="Отправьте короткое описание объекта или текущей схемы отопления. Мы ответим предметно, а не общими фразами."
-              primaryHref="/kontakty#lead-form"
+              primaryHref="/contacts#lead-form"
               primaryLabel="Задать вопрос"
-              secondaryHref="/kalkulyator"
+              secondaryHref="/calculator"
               secondaryLabel="Перейти в калькулятор"
             />
           </div>

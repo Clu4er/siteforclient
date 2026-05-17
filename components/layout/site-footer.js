@@ -29,9 +29,8 @@ export function SiteFooter({ company }) {
 
         <div className="footer-group">
           <h3>Контакты</h3>
-          <a href={`tel:${company.phone.replace(/\D/g, "")}`}>{company.phone}</a>
+          <a href={`tel:+${company.phone.replace(/\D/g, "")}`}>{company.phone}</a>
           <a href={`mailto:${company.email}`}>{company.email}</a>
-          {company.whatsapp ? <a href={`https://wa.me/${company.whatsapp}`}>WhatsApp</a> : null}
           {telegram ? <a href={`https://t.me/${telegram}`}>Telegram</a> : null}
           {company.max ? <a href={company.max}>MAX</a> : null}
           <p>{company.address}</p>
@@ -44,7 +43,7 @@ export function SiteFooter({ company }) {
           {company.name}. Инженерные решения по отоплению на базе майнинга, GPU и
           утилизации тепла.
         </p>
-        <p>Калькулятор и тексты на сайте не являются финансовой офертой.</p>
+        <p>Калькулятор показывает ориентир и не является финансовой гарантией.</p>
       </div>
     </footer>
   );

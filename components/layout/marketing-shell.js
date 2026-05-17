@@ -18,8 +18,8 @@ export function MarketingShell({ content, children }) {
       {children}
       <SiteFooter company={content.company} />
       <div className="sticky-mobile-cta">
-        <a href={`tel:${content.company.phone.replace(/\D/g, "")}`}>Позвонить</a>
-        <Link href="/kontakty#lead-form">Получить расчёт</Link>
+        <a href={`tel:+${content.company.phone.replace(/\D/g, "")}`}>Позвонить</a>
+        <Link href="/contacts#lead-form">Получить расчёт</Link>
       </div>
     </>
   );

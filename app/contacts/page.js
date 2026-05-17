@@ -14,13 +14,13 @@ export const metadata = buildMetadata({
   title: "Контакты, заявка и расчёт по криптокотлу",
   description:
     "Свяжитесь с BTC-ГРУПП: расчёт под дом, бизнес, теплицу, GPU или коммерческий объект. Форма заявки, контакты, мессенджеры и география работы.",
-  path: "/kontakty",
+  path: "/contacts",
   keywords: ["контакты криптокотёл", "заявка на криптокотёл", "расчёт отопления майнингом"],
 });
 
 export default async function ContactsPage() {
   const content = await getSiteContent();
-  const breadcrumbs = getBreadcrumbs("/kontakty");
+  const breadcrumbs = getBreadcrumbs("/contacts");
   const telegram = content.company.telegram?.replace("@", "");
 
   const contactCards = [
@@ -32,7 +32,7 @@ export default async function ContactsPage() {
     {
       badge: "Email",
       title: content.company.email,
-      text: "Подходит для коммерческих вводных, технических вопросов и отправки исходных данных по объекту.",
+      text: "Подходит для параметров объекта, технических вопросов и исходных данных для расчёта.",
     },
     {
       badge: "География",
@@ -54,19 +54,14 @@ export default async function ContactsPage() {
               <span className="eyebrow">Контакты</span>
               <h1>Обсудим объект, сценарий отопления и следующий шаг по проекту</h1>
               <p>
-                Страница контактов собирает все коммерческие CTA в одном месте: телефон,
-                email, мессенджеры, форма и понятный путь к расчёту под дом, бизнес или
-                GPU-сценарий.
+                Расскажите, какой у вас объект и как он отапливается сейчас. Мы
+                подскажем, есть ли смысл считать криптокотёл, какие вводные нужны и с
+                чего лучше начать.
               </p>
               <div className="hero-copy__actions">
-                <a className="btn btn--primary" href={`tel:${content.company.phone.replace(/\D/g, "")}`}>
+                <a className="btn btn--primary" href={`tel:+${content.company.phone.replace(/\D/g, "")}`}>
                   Позвонить
                 </a>
-                {content.company.whatsapp ? (
-                  <a className="btn btn--ghost" href={`https://wa.me/${content.company.whatsapp}`}>
-                    Написать в WhatsApp
-                  </a>
-                ) : null}
               </div>
             </div>
           </div>
@@ -76,8 +71,8 @@ export default async function ContactsPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Контактные каналы"
-              title="Мы сделали контакты частью продуктового маршрута, а не формальностью в футере"
-              description="Когда пользователь доходит до этой страницы, ему должно быть максимально просто выбрать канал связи и отправить вводные без лишних барьеров."
+              title="Выберите удобный способ связи"
+              description="Можно позвонить, написать на email или сразу отправить вводные через форму. Мы вернёмся с уточняющими вопросами и первым ориентиром."
             />
             <FeatureGrid items={contactCards} />
           </div>
@@ -93,11 +88,8 @@ export default async function ContactsPage() {
                 предметного расчёта лучше сразу оставить вводные через форму.
               </p>
               <div className="contact-links">
-                <a href={`tel:${content.company.phone.replace(/\D/g, "")}`}>{content.company.phone}</a>
+                <a href={`tel:+${content.company.phone.replace(/\D/g, "")}`}>{content.company.phone}</a>
                 <a href={`mailto:${content.company.email}`}>{content.company.email}</a>
-                {content.company.whatsapp ? (
-                  <a href={`https://wa.me/${content.company.whatsapp}`}>WhatsApp</a>
-                ) : null}
                 {telegram ? <a href={`https://t.me/${telegram}`}>Telegram</a> : null}
                 {content.company.max ? <a href={content.company.max}>MAX</a> : null}
               </div>
