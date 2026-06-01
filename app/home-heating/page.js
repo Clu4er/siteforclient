@@ -11,7 +11,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { StepsGrid } from "@/components/ui/steps-grid";
 import { getSiteContent } from "@/lib/cms";
 import { mediaAssets } from "@/lib/site-assets";
-import { getBreadcrumbs } from "@/lib/site-routes";
+import { getBreadcrumbs, getNeighborScenarioLinks } from "@/lib/site-routes";
 import { buildMetadata, createBreadcrumbSchema, createServiceSchema } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -80,27 +80,10 @@ const homeSteps = [
   },
 ];
 
-const relatedLinks = [
-  {
-    href: "/gas-heating-comparison",
-    title: "Сравнение с газом",
-    text: "Если в доме уже есть газ, здесь видно, где криптокотёл становится дополняющим или альтернативным сценарием.",
-  },
-  {
-    href: "/electric-heating-comparison",
-    title: "Сравнение с электричеством",
-    text: "Полезно, если дом уже отапливается от сети и вы хотите иначе использовать каждый кВт·ч.",
-  },
-  {
-    href: "/calculator",
-    title: "Калькулятор под дом",
-    text: "Можно быстро посчитать домашний сценарий по мощности, TH/s, курсу BTC и стоимости электричества.",
-  },
-];
-
 export default async function ForHomePage() {
   const content = await getSiteContent();
   const breadcrumbs = getBreadcrumbs("/home-heating");
+  const relatedLinks = getNeighborScenarioLinks("/home-heating");
 
   return (
     <MarketingShell content={content}>
@@ -122,7 +105,10 @@ export default async function ForHomePage() {
             <div className="page-hero__grid">
               <div className="page-hero__copy">
                 <span className="eyebrow">Для дома</span>
-                <h1>Криптокотёл для дома, коттеджа и бытовых контуров тепла</h1>
+                <h1>
+                  Криптокотёл для <span className="text-highlight">дома</span>,
+                  коттеджа и бытовых контуров тепла
+                </h1>
                 <p>
                   Помогаем понять, можно ли использовать криптокотёл в вашем доме без
                   лишней сложности. Смотрим на комфорт, шум, текущий котёл, расходы на
@@ -158,7 +144,12 @@ export default async function ForHomePage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Что получает домовладелец"
-              title="Тепло для привычных домашних задач"
+              title={
+                <>
+                  Тепло для привычных{" "}
+                  <span className="text-highlight">домашних задач</span>
+                </>
+              }
               description="Криптокотёл не должен усложнять жизнь. Мы подбираем схему так, чтобы она работала с тёплым полом, радиаторами, бойлером, бассейном и резервным источником тепла."
             />
             <FeatureGrid items={homeFeatures} />
@@ -190,9 +181,9 @@ export default async function ForHomePage() {
         <section className="section">
           <div className="shell">
             <SectionHeading
-              eyebrow="Что посмотреть дальше"
-              title="Сравните решение с привычным отоплением"
-              description="Если у вас уже есть газ или электрический котёл, сравнение поможет спокойнее оценить плюсы, ограничения и примерную экономику."
+              eyebrow="Связанные разделы"
+              title="Соседние сценарии"
+              description="Откройте соседние сценарии: бизнес, ГПУ, инженерное подключение и сравнение с привычным отоплением."
             />
             <RelatedLinks items={relatedLinks} />
           </div>

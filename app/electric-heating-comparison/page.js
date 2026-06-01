@@ -11,7 +11,7 @@ import { RelatedLinks } from "@/components/ui/related-links";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getSiteContent } from "@/lib/cms";
 import { mediaAssets } from "@/lib/site-assets";
-import { getBreadcrumbs } from "@/lib/site-routes";
+import { getBreadcrumbs, getNeighborScenarioLinks } from "@/lib/site-routes";
 import { buildMetadata, createBreadcrumbSchema, createServiceSchema } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -64,27 +64,10 @@ const electricityRows = [
   },
 ];
 
-const relatedLinks = [
-  {
-    href: "/calculator",
-    title: "Калькулятор отопления",
-    text: "Здесь можно сразу просчитать сценарий по TH/s, курсу BTC, мощности и стоимости электроэнергии.",
-  },
-  {
-    href: "/home-heating",
-    title: "Для дома",
-    text: "Особенно актуально для домовладельцев с электрическим отоплением и без газа.",
-  },
-  {
-    href: "/business-heating",
-    title: "Для бизнеса",
-    text: "Коммерческие объекты с высокой электрической нагрузкой часто воспринимают этот сценарий ещё предметнее.",
-  },
-];
-
 export default async function CompareElectricityPage() {
   const content = await getSiteContent();
   const breadcrumbs = getBreadcrumbs("/electric-heating-comparison");
+  const relatedLinks = getNeighborScenarioLinks("/electric-heating-comparison");
 
   return (
     <MarketingShell content={content}>
@@ -157,9 +140,9 @@ export default async function CompareElectricityPage() {
         <section className="section">
           <div className="shell">
             <SectionHeading
-              eyebrow="Следующие шаги"
-              title="Посчитайте свой сценарий или выберите тип объекта"
-              description="Можно сразу открыть калькулятор, а затем перейти к странице для дома или бизнеса."
+              eyebrow="Связанные разделы"
+              title="Соседние сценарии"
+              description="Перейдите к сценариям для дома, бизнеса, ГПУ или инженерному подключению."
             />
             <RelatedLinks items={relatedLinks} />
           </div>

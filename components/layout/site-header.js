@@ -4,18 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { headerRoutes } from "@/lib/site-routes";
+import { headerRoutes, isRouteActive } from "@/lib/site-routes";
 
-const mobileNavRoutes = [
-  { href: "/", label: "Главная" },
-  { href: "/home-heating", label: "Для дома" },
-  { href: "/business-heating", label: "Для бизнеса" },
-  { href: "/electric-heating-comparison", label: "Сравнение" },
-  { href: "/calculator", label: "Калькулятор" },
-  { href: "/bearings", label: "Подшипники" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contacts", label: "Контакты" },
-];
+const mobileNavRoutes = [{ href: "/", label: "Главная" }, ...headerRoutes];
 
 export function SiteHeader({ company }) {
   const pathname = usePathname();
@@ -33,14 +24,13 @@ export function SiteHeader({ company }) {
     setMenuOpen(false);
   }, [pathname]);
 
-  const isActive = (href) =>
-    href === "/" ? pathname === href : pathname?.startsWith(href);
+  const getLinkClassName = (route) => (isRouteActive(route, pathname) ? "is-active" : "");
 
   return (
     <header className="site-header">
       <div className="shell header-row">
         <Link href="/" className="brand-block" onClick={() => setMenuOpen(false)}>
-          <span className="brand-block__mark">BTC</span>
+          <span className="brand-block__mark">ВТС</span>
           <span>
             <strong>{company.name}</strong>
             <small>тепло + майнинг + инженерия</small>
@@ -49,11 +39,7 @@ export function SiteHeader({ company }) {
 
         <nav className="desktop-nav" aria-label="Основная навигация">
           {headerRoutes.map((route) => (
-            <Link
-              key={route.href}
-              href={route.href}
-              className={isActive(route.href) ? "is-active" : ""}
-            >
+            <Link key={route.href} href={route.href} className={getLinkClassName(route)}>
               {route.label}
             </Link>
           ))}
@@ -88,7 +74,7 @@ export function SiteHeader({ company }) {
               <Link
                 key={route.href}
                 href={route.href}
-                className={isActive(route.href) ? "is-active" : ""}
+                className={getLinkClassName(route)}
                 onClick={() => setMenuOpen(false)}
               >
                 {route.label}

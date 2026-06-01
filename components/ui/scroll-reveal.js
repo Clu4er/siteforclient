@@ -38,7 +38,7 @@ export function ScrollReveal() {
 
     targets.forEach((target, index) => {
       target.classList.add("reveal-ready");
-      target.style.setProperty("--reveal-delay", `${(index % 4) * 70}ms`);
+      target.style.setProperty("--reveal-delay", `${(index % 4) * 35}ms`);
     });
 
     const observer = new IntersectionObserver(
@@ -48,7 +48,7 @@ export function ScrollReveal() {
         });
       },
       {
-        rootMargin: "-8% 0px -10% 0px",
+        rootMargin: "-3% 0px -6% 0px",
         threshold: 0.1,
       },
     );

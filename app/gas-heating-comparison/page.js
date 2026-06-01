@@ -11,7 +11,7 @@ import { RelatedLinks } from "@/components/ui/related-links";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getSiteContent } from "@/lib/cms";
 import { mediaAssets } from "@/lib/site-assets";
-import { getBreadcrumbs } from "@/lib/site-routes";
+import { getBreadcrumbs, getNeighborScenarioLinks } from "@/lib/site-routes";
 import { buildMetadata, createBreadcrumbSchema, createServiceSchema } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -64,27 +64,10 @@ const gasRows = [
   },
 ];
 
-const relatedLinks = [
-  {
-    href: "/electric-heating-comparison",
-    title: "Сравнение с электричеством",
-    text: "Если объект греется от сети, логика криптокотла часто становится ещё более предметной и вычислимой.",
-  },
-  {
-    href: "/home-heating",
-    title: "Для дома",
-    text: "Сценарий для частных объектов с бассейнами, бойлерами, тёплым полом и гибридной интеграцией.",
-  },
-  {
-    href: "/business-heating",
-    title: "Для бизнеса",
-    text: "Для объектов с большой тепловой нагрузкой и понятным режимом работы.",
-  },
-];
-
 export default async function CompareGasPage() {
   const content = await getSiteContent();
   const breadcrumbs = getBreadcrumbs("/gas-heating-comparison");
+  const relatedLinks = getNeighborScenarioLinks("/gas-heating-comparison");
 
   return (
     <MarketingShell content={content}>
@@ -153,9 +136,9 @@ export default async function CompareGasPage() {
         <section className="section">
           <div className="shell">
             <SectionHeading
-              eyebrow="Что посмотреть дальше"
-              title="Где смотреть дальше"
-              description="Если хотите глубже разобраться, посмотрите сравнение с электричеством или страницы для дома и бизнеса."
+              eyebrow="Связанные разделы"
+              title="Соседние сценарии"
+              description="Перейдите к сценариям для дома, бизнеса, ГПУ или инженерному подключению."
             />
             <RelatedLinks items={relatedLinks} />
           </div>

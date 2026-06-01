@@ -1,4 +1,4 @@
-import { LeadForm } from "@/components/forms/lead-form";
+﻿import { LeadForm } from "@/components/forms/lead-form";
 import { MarketingShell } from "@/components/layout/marketing-shell";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
@@ -8,14 +8,14 @@ import { RelatedLinks } from "@/components/ui/related-links";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StepsGrid } from "@/components/ui/steps-grid";
 import { getSiteContent } from "@/lib/cms";
-import { getBreadcrumbs } from "@/lib/site-routes";
+import { getBreadcrumbs, getNeighborScenarioLinks } from "@/lib/site-routes";
 import { buildMetadata, createBreadcrumbSchema, createServiceSchema } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Подключение криптокотла к существующему отоплению | Гибридная схема",
+  title: "Инженерия отопления: подключение криптокотла к системе",
   description:
     "Как встроить криптокотёл в действующую систему отопления с газовым, электрическим или резервным котлом: сценарии, обвязка, автоматика и расчёт тепла.",
-  path: "/gibridnoe-otoplenie",
+  path: "/engineering",
   keywords: [
     "гибридное отопление",
     "подключение криптокотла к отоплению",
@@ -58,27 +58,10 @@ const steps = [
   },
 ];
 
-const relatedLinks = [
-  {
-    href: "/home-heating",
-    title: "Для дома",
-    text: "Сценарии для коттеджей, бассейнов, тёплых полов и бытовых контуров.",
-  },
-  {
-    href: "/business-heating",
-    title: "Для бизнеса",
-    text: "Отели, теплицы, сервисные зоны и объекты с постоянным спросом на тепло.",
-  },
-  {
-    href: "/gas-heating-comparison",
-    title: "Сравнение с газом",
-    text: "Где криптокотёл дополняет газовую схему, а где газ остаётся базовым источником.",
-  },
-];
-
 export default async function HybridHeatingPage() {
   const content = await getSiteContent();
-  const breadcrumbs = getBreadcrumbs("/gibridnoe-otoplenie");
+  const breadcrumbs = getBreadcrumbs("/engineering");
+  const relatedLinks = getNeighborScenarioLinks("/engineering");
 
   return (
     <MarketingShell content={content}>
@@ -88,7 +71,7 @@ export default async function HybridHeatingPage() {
           name: "Подключение криптокотла к существующему отоплению",
           description:
             "Проектирование гибридной схемы, где криптокотёл работает рядом с текущим отоплением, резервным источником и автоматикой объекта.",
-          path: "/gibridnoe-otoplenie",
+          path: "/engineering",
           providerName: content.company.name,
         })}
       />
@@ -98,8 +81,11 @@ export default async function HybridHeatingPage() {
           <div className="shell">
             <Breadcrumbs items={breadcrumbs} />
             <div className="page-hero__copy page-hero__copy--wide">
-              <span className="eyebrow">Гибридное отопление</span>
-              <h1>Как встроить криптокотёл в существующую систему отопления</h1>
+              <span className="eyebrow">Инженерия</span>
+              <h1>
+                Как встроить <span className="text-highlight">криптокотёл</span>{" "}
+                в существующую систему отопления
+              </h1>
               <p>
                 Не всегда нужно строить систему с нуля. Часто сильнее работает гибридный сценарий:
                 криптокотёл берёт на себя полезную тепловую нагрузку, а текущий котёл остаётся
@@ -121,7 +107,12 @@ export default async function HybridHeatingPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Когда подходит"
-              title="Сценарий для объектов, где отопление уже есть"
+              title={
+                <>
+                  Сценарий для объектов, где{" "}
+                  <span className="text-highlight">отопление уже есть</span>
+                </>
+              }
               description="Задача не в том, чтобы заменить всё оборудование одним махом, а в том, чтобы аккуратно добавить источник тепла с понятной экономикой."
             />
             <FeatureGrid items={fitCards} />
@@ -132,7 +123,12 @@ export default async function HybridHeatingPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Порядок работы"
-              title="Сначала схема и расчёт, потом оборудование"
+              title={
+                <>
+                  Сначала <span className="text-highlight">схема и расчёт</span>,
+                  потом оборудование
+                </>
+              }
               description="Мы смотрим на объект как на инженерную систему: нагрузка, контуры, автоматика, резерв и только после этого подбор конфигурации."
             />
             <StepsGrid items={steps} />
@@ -143,8 +139,8 @@ export default async function HybridHeatingPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Связанные разделы"
-              title="Посмотрите соседние сценарии"
-              description="Эти страницы помогают понять, как гибридная схема ведёт себя в доме, бизнесе и рядом с газовым отоплением."
+              title="Соседние сценарии"
+              description="Эти страницы помогают понять, как инженерная схема ведёт себя в доме, бизнесе, ГПУ-контуре и сравнении с привычным отоплением."
             />
             <RelatedLinks items={relatedLinks} />
           </div>

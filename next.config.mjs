@@ -15,7 +15,9 @@ const nextConfig = {
         permanent: true,
       },
       { source: "/kalkulyator", destination: "/calculator", permanent: true },
-      { source: "/gpu-otoplenie", destination: "/gpu-heat-recovery", permanent: true },
+      { source: "/gpu-otoplenie", destination: "/gpu", permanent: true },
+      { source: "/gpu-heat-recovery", destination: "/gpu", permanent: true },
+      { source: "/gibridnoe-otoplenie", destination: "/engineering", permanent: true },
       { source: "/kontakty", destination: "/contacts", permanent: true },
       { source: "/podshipniki", destination: "/bearings", permanent: true },
     ];

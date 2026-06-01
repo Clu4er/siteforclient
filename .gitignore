@@ -4,6 +4,7 @@ out/
 dist/
 .vercel/
 .codex/
+.next-dev.*.log
 
 .env
 .env.local

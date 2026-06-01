@@ -10,40 +10,40 @@ import { getSiteContent } from "@/lib/cms";
 
 export const metadata = {
   title: {
-    absolute: "Подшипники для промышленности и сервиса | СПК",
+    absolute: "Подшипники для промышленности и сервиса | ВТС-ГРУПП",
   },
   description:
-    "Саратовская Подшипниковая Корпорация поставляет российские и импортные подшипники, помогает подобрать аналоги и быстро обработать заявку.",
+    "ВТС-ГРУПП поставляет российские и импортные подшипники, помогает подобрать аналоги и быстро обработать заявку.",
   alternates: {
     canonical: "/bearings",
   },
   openGraph: {
-    title: "Подшипники для промышленности и сервиса | СПК",
+    title: "Подшипники для промышленности и сервиса | ВТС-ГРУПП",
     description:
       "Поставка российских и импортных подшипников, подбор аналогов и обработка заявок для снабжения.",
     url: "/bearings",
-    siteName: "Саратовская Подшипниковая Корпорация",
+    siteName: "ВТС-ГРУПП",
     locale: "ru_RU",
     type: "website",
     images: [
       {
-        url: "/media/bearings-hero.png",
-        width: 2048,
-        height: 1024,
+        url: "/media/bearings-hero-btc.png",
+        width: 1827,
+        height: 861,
         alt: "Подшипники для промышленности и сервиса",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Подшипники для промышленности и сервиса | СПК",
+    title: "Подшипники для промышленности и сервиса | ВТС-ГРУПП",
     description:
       "Поставка российских и импортных подшипников, подбор аналогов и обработка заявок для снабжения.",
-    images: ["/media/bearings-hero.png"],
+    images: ["/media/bearings-hero-btc.png"],
   },
   keywords: [
-    "Саратовская Подшипниковая Корпорация",
-    "подшипники Саратов",
+    "ВТС-ГРУПП подшипники",
+    "подшипники для промышленности",
     "импортные подшипники",
     "отечественные подшипники",
     "поставка подшипников",
@@ -84,7 +84,7 @@ const facts = [
     label: "наименований подшипниковой продукции на складе",
   },
   {
-    value: "B2B",
+    value: "Бизнес",
     label: "поставки для промышленности, снабжения и сервиса",
   },
   {
@@ -123,7 +123,7 @@ const valueCards = [
   },
 ];
 
-const spkContactInfo = {
+const bearingsContactInfo = {
   title: "Контактная информация",
   phone: "+7 (903) 328-76-11",
   secondaryPhones: [],
@@ -137,8 +137,8 @@ const spkContactInfo = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "ООО ТД «Саратовская Подшипниковая Корпорация»",
-  url: "https://spkpod.ru/",
+  name: "ВТС-ГРУПП",
+  url: "https://techno-comfort.pro/bearings",
   email: "Kav-spk@mail.ru",
   telephone: "+7(903)-328-76-11",
   address: {
@@ -165,8 +165,7 @@ export default async function BearingsPage() {
                 и снабжения
               </span>
               <h1>
-                Саратовская{" "}
-                <span className="text-highlight">Подшипниковая</span> Корпорация
+                Подшипники <span className="text-highlight">ВТС-ГРУПП</span>
               </h1>
               <p>
                 Поставляем российские и импортные подшипники для промышленности,
@@ -189,7 +188,7 @@ export default async function BearingsPage() {
                   <p>Torrington, Timken, THK, NTN, NSK, Nachi, Koyo, INA и другие.</p>
                 </Link>
                 <Link className="link-card" href="#contacts">
-                  <strong>Контакты СПК</strong>
+                  <strong>Контакты ВТС-ГРУПП</strong>
                   <p>Саратов, ул. им. Тархова С.Ф., 29А. Телефоны и email ниже.</p>
                 </Link>
               </div>
@@ -197,10 +196,10 @@ export default async function BearingsPage() {
 
             <div className="bearings-visual" aria-label="Подшипниковая продукция">
               <Image
-                src="/media/bearings-hero.png"
-                alt="Подшипники СПК с технологичной подсветкой"
-                width={2048}
-                height={1024}
+                src="/media/bearings-hero-btc.png"
+                alt="Подшипники ВТС-ГРУПП с технологичной подсветкой"
+                width={1827}
+                height={861}
                 priority
                 sizes="(max-width: 960px) 100vw, 42vw"
               />
@@ -237,7 +236,7 @@ export default async function BearingsPage() {
                     для промышленности
                   </>
                 }
-                description="СПК работает с российскими и импортными подшипниками, помогает закрывать заявки снабжения и подбирать аналоги по размерам или техническим характеристикам."
+                description="ВТС-ГРУПП работает с российскими и импортными подшипниками, помогает закрывать заявки снабжения и подбирать аналоги по размерам или техническим характеристикам."
               />
 
               <div className="feature-grid feature-grid--3 bearings-value-grid">
@@ -251,9 +250,9 @@ export default async function BearingsPage() {
 
               <div className="bearings-copy">
                 <p>
-                  ООО «Саратовская Подшипниковая Корпорация» имеет большой опыт
-                  поставки подшипников. Помогаем с заявками по номерам, размерам,
-                  брендам и аналогам, чтобы снабжение быстрее получило понятный ответ.
+                  ВТС-ГРУПП поставляет подшипники для промышленности, сервиса и
+                  производства. Помогаем с заявками по номерам, размерам, брендам и
+                  аналогам, чтобы снабжение быстрее получило понятный ответ.
                 </p>
                 <p>
                   На собственной территории расположен складской комплекс. Продукция
@@ -319,14 +318,14 @@ export default async function BearingsPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Контакты"
-              title="Контактная информация СПК"
-              description="ООО ТД «Саратовская Подшипниковая Корпорация». Адрес, телефоны и email для заявок на поставку подшипников."
+              title="Контактная информация ВТС-ГРУПП"
+              description="Адрес, телефон и email для заявок на поставку подшипников."
             />
 
             <div className="bearings-contact-grid">
               <article className="contact-panel">
                 <h3>Компания</h3>
-                <strong>ООО ТД «Саратовская Подшипниковая Корпорация»</strong>
+                <strong>ВТС-ГРУПП</strong>
                 <p>410064, Саратов, ул. им. Тархова С.Ф., 29А</p>
               </article>
               <article className="contact-panel">
@@ -334,11 +333,8 @@ export default async function BearingsPage() {
                 <a href="tel:+79033287611">+7 (903) 328-76-11</a>
               </article>
               <article className="contact-panel">
-                <h3>Email и сайт</h3>
+                <h3>Email</h3>
                 <a href="mailto:Kav-spk@mail.ru">Kav-spk@mail.ru</a>
-                <a href="https://spkpod.ru/" target="_blank" rel="noreferrer">
-                  spkpod.ru
-                </a>
               </article>
             </div>
           </div>
@@ -347,17 +343,17 @@ export default async function BearingsPage() {
         <section className="section">
           <div className="shell">
             <LeadForm
-              source="spk-bearings"
+              source="vts-bearings"
               eyebrow="Заявка на подшипники"
               title="Отправить запрос на подбор или поставку"
-              subtitle="Укажите номер подшипника, бренд, аналог, размеры, количество или описание узла. Специалисты СПК вернутся с вариантом поставки и уточняющими вопросами."
+              subtitle="Укажите номер подшипника, бренд, аналог, размеры, количество или описание узла. Специалисты ВТС-ГРУПП вернутся с вариантом поставки и уточняющими вопросами."
               buttonLabel="Отправить заявку"
               objectLabel="Позиция или бренд"
               objectPlaceholder="Например: 6205, SKF, Timken, ЕПК"
               messagePlaceholder="Номер, размеры, количество, производитель, условия работы или требуемый аналог"
-              footerText="Для срочных поставок можно дополнительно позвонить по телефону СПК."
-              successText="Заявка отправлена. Специалисты СПК свяжутся с вами по указанным контактам."
-              contactInfo={spkContactInfo}
+              footerText="Для срочных поставок можно дополнительно позвонить по телефону ВТС-ГРУПП."
+              successText="Заявка отправлена. Специалисты ВТС-ГРУПП свяжутся с вами по указанным контактам."
+              contactInfo={bearingsContactInfo}
             />
           </div>
         </section>

@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 import { LeadForm } from "@/components/forms/lead-form";
 import { MarketingShell } from "@/components/layout/marketing-shell";
@@ -13,7 +13,7 @@ import { buildMetadata, createBreadcrumbSchema, createOrganizationSchema } from 
 export const metadata = buildMetadata({
   title: "Контакты, заявка и расчёт по криптокотлу",
   description:
-    "Свяжитесь с BTC-ГРУПП: расчёт под дом, бизнес, теплицу, GPU или коммерческий объект. Форма заявки, контакты, мессенджеры и география работы.",
+    "Свяжитесь с ВТС-ГРУПП: расчёт под дом, бизнес, теплицу, ГПУ или коммерческий объект. Форма заявки, контакты и география работы.",
   path: "/contacts",
   keywords: ["контакты криптокотёл", "заявка на криптокотёл", "расчёт отопления майнингом"],
 });
@@ -37,7 +37,7 @@ export default async function ContactsPage() {
     {
       badge: "География",
       title: content.company.address,
-      text: "Работаем по России и СНГ, обсуждаем как частные объекты, так и B2B и вычислительные контуры.",
+      text: "Работаем по России и СНГ, обсуждаем частные, коммерческие и вычислительные объекты.",
     },
   ];
 
@@ -52,7 +52,10 @@ export default async function ContactsPage() {
             <Breadcrumbs items={breadcrumbs} />
             <div className="page-hero__copy page-hero__copy--wide">
               <span className="eyebrow">Контакты</span>
-              <h1>Обсудим объект, сценарий отопления и следующий шаг по проекту</h1>
+              <h1>
+                Обсудим <span className="text-highlight">объект</span>, сценарий
+                отопления и следующий шаг
+              </h1>
               <p>
                 Расскажите, какой у вас объект и как он отапливается сейчас. Мы
                 подскажем, есть ли смысл считать криптокотёл, какие вводные нужны и с
@@ -103,10 +106,10 @@ export default async function ContactsPage() {
               <span className="eyebrow">Что прислать</span>
               <h2>Минимум, чтобы стартовать расчёт</h2>
               <ul className="bullet-list">
-                <li>Тип объекта: дом, гостиница, теплица, сервис, производство, GPU.</li>
+                <li>Тип объекта: дом, гостиница, теплица, сервис, производство, ГПУ.</li>
                 <li>Какой источник отопления используется сейчас.</li>
                 <li>Стоимость электроэнергии и роль полезного тепла на объекте.</li>
-                <li>Если есть: площадь, контуры, бассейн, бойлер, теплица, ГВС или техконтур.</li>
+                <li>Если есть: площадь, контуры, бассейн, бойлер, теплица, ГВС или техническая нагрузка.</li>
               </ul>
               <div className="section-actions">
                 <Link className="btn btn--ghost" href="/faq">

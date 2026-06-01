@@ -1,4 +1,4 @@
-import { LeadForm } from "@/components/forms/lead-form";
+﻿import { LeadForm } from "@/components/forms/lead-form";
 import { MarketingShell } from "@/components/layout/marketing-shell";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
@@ -32,7 +32,7 @@ const faqCategories = [
   },
   {
     title: "Сегменты и сценарии",
-    text: "Дом, бизнес, теплица, GPU, гостиница, сервисный объект и производственные сценарии.",
+    text: "Дом, бизнес, теплица, ГПУ, гостиница, сервисный объект и производственные сценарии.",
   },
 ];
 
@@ -60,7 +60,10 @@ export default async function FaqPage() {
             <Breadcrumbs items={breadcrumbs} />
             <div className="page-hero__copy page-hero__copy--wide">
               <span className="eyebrow">FAQ</span>
-              <h1>FAQ по криптокотлам и отоплению на базе майнинга</h1>
+              <h1>
+                FAQ по <span className="text-highlight">криптокотлам</span> и
+                отоплению на базе майнинга
+              </h1>
               <p>
                 Здесь собраны ответы на вопросы, которые обычно появляются до расчёта:
                 как подключается оборудование, насколько оно шумит, что происходит
@@ -74,7 +77,12 @@ export default async function FaqPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Что здесь внутри"
-              title="Коротко о главном перед заявкой"
+              title={
+                <>
+                  Коротко о <span className="text-highlight">главном</span> перед
+                  заявкой
+                </>
+              }
               description="Мы отвечаем простым языком: про подключение, расчёт, шум, сезонность и сценарии для разных объектов."
             />
             <div className="feature-grid feature-grid--3">

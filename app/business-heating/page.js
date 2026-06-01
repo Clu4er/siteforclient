@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 
 import { LeadForm } from "@/components/forms/lead-form";
 import { MarketingShell } from "@/components/layout/marketing-shell";
@@ -11,7 +11,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { StepsGrid } from "@/components/ui/steps-grid";
 import { getSiteContent } from "@/lib/cms";
 import { mediaAssets } from "@/lib/site-assets";
-import { getBreadcrumbs } from "@/lib/site-routes";
+import { getBreadcrumbs, getNeighborScenarioLinks } from "@/lib/site-routes";
 import { buildMetadata, createBreadcrumbSchema, createServiceSchema } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -80,27 +80,10 @@ const businessSteps = [
   },
 ];
 
-const relatedLinks = [
-  {
-    href: "/gpu-heat-recovery",
-    title: "GPU и техконтуры",
-    text: "Если у бизнеса уже есть вычислительная нагрузка, тепло от неё можно вернуть в инженерные контуры.",
-  },
-  {
-    href: "/electric-heating-comparison",
-    title: "Сравнение с электричеством",
-    text: "Актуально для объектов, где уже есть высокая электрическая нагрузка и интерес к изменению структуры затрат.",
-  },
-  {
-    href: "/contacts",
-    title: "Контакты и заявка",
-    text: "Перейдите к заявке, если хотите обсудить объект и получить первичный расчёт.",
-  },
-];
-
 export default async function ForBusinessPage() {
   const content = await getSiteContent();
   const breadcrumbs = getBreadcrumbs("/business-heating");
+  const relatedLinks = getNeighborScenarioLinks("/business-heating");
 
   return (
     <MarketingShell content={content}>
@@ -122,7 +105,10 @@ export default async function ForBusinessPage() {
             <div className="page-hero__grid">
               <div className="page-hero__copy">
                 <span className="eyebrow">Для бизнеса</span>
-                <h1>Криптокотёл для коммерческих объектов и сценариев с полезным теплом</h1>
+                <h1>
+                  Криптокотёл для <span className="text-highlight">бизнеса</span>{" "}
+                  и объектов с полезным теплом
+                </h1>
                 <p>
                   Для бизнеса важно не просто поставить оборудование, а понять, как оно
                   впишется в объект. Мы смотрим на тепловую нагрузку, электричество,
@@ -157,8 +143,13 @@ export default async function ForBusinessPage() {
         <section className="section">
           <div className="shell">
             <SectionHeading
-              eyebrow="B2B-фокус"
-              title="Решение должно быть понятно директору, инженеру и снабжению"
+              eyebrow="Для бизнеса"
+              title={
+                <>
+                  Решение должно быть понятно{" "}
+                  <span className="text-highlight">директору и инженеру</span>
+                </>
+              }
               description="Мы объясняем проект простым языком: какая задача решается, сколько тепла нужно, какие ограничения есть и какой следующий шаг безопасен для бизнеса."
             />
             <FeatureGrid items={businessFeatures} />
@@ -190,9 +181,9 @@ export default async function ForBusinessPage() {
         <section className="section">
           <div className="shell">
             <SectionHeading
-              eyebrow="Что посмотреть дальше"
-              title="Полезные страницы для следующего шага"
-              description="Можно посмотреть сценарий с GPU, сравнить решение с электрическим отоплением или сразу отправить вводные по объекту."
+              eyebrow="Связанные разделы"
+              title="Соседние сценарии"
+              description="Можно посмотреть домашний сценарий, ГПУ, инженерное подключение или сравнение с привычным отоплением."
             />
             <RelatedLinks items={relatedLinks} />
           </div>
@@ -204,7 +195,7 @@ export default async function ForBusinessPage() {
               title="Нужен расчёт под гостиницу, теплицу, сервис или производство?"
               text="Оставьте вводные по объекту. Мы подготовим инженерный сценарий, посчитаем полезное тепло и соберём ориентир по нагрузке и экономике."
               primaryHref="/contacts#lead-form"
-              primaryLabel="Запросить B2B-расчёт"
+              primaryLabel="Запросить расчёт для бизнеса"
               secondaryHref="/calculator"
               secondaryLabel="Открыть калькулятор"
             />
