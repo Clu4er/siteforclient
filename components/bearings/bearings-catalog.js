@@ -36,7 +36,7 @@ export function BearingsCatalog({ importedBrands, domesticBrands }) {
         <h3>Импортные подшипники</h3>
         <div className="bearings-brand-list">
           {filteredImported.map((brand) => (
-            <a href="#lead-form" key={brand}>
+            <a href="#contacts" key={brand}>
               {brand}
             </a>
           ))}
@@ -47,7 +47,7 @@ export function BearingsCatalog({ importedBrands, domesticBrands }) {
         <h3>Отечественные подшипники</h3>
         <div className="bearings-brand-list">
           {filteredDomestic.map((brand) => (
-            <a href="#lead-form" key={brand}>
+            <a href="#contacts" key={brand}>
               {brand}
             </a>
           ))}
@@ -55,7 +55,7 @@ export function BearingsCatalog({ importedBrands, domesticBrands }) {
       </div>
 
       {filteredImported.length === 0 && filteredDomestic.length === 0 ? (
-        <p className="bearings-empty">Ничего не найдено. Отправьте заявку, подберём аналог.</p>
+        <p className="bearings-empty">Ничего не найдено. Напишите нам, подберём аналог.</p>
       ) : null}
     </aside>
   );

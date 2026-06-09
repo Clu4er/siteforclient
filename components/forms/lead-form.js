@@ -1,16 +1,16 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const defaultContactInfo = {
   title: "Контактная информация",
   phone: "+7 (903) 328-76-11",
-  email: "hello@cryptoheat.local",
+  email: "Kav-spk@mail.ru",
   telegram: "",
-  whatsapp: "79033287611",
+  whatsapp: "",
   max: "",
-  address: "Москва, выезды по России и СНГ",
+  address: "410036, Саратов, Ростовская 38/50",
   hours: "Пн-Сб, 09:00-19:00",
 };
 
@@ -18,239 +18,155 @@ function cleanPhone(value) {
   return String(value || "").replace(/\D/g, "");
 }
 
-function trackEvent(name, payload) {
-  if (typeof window === "undefined") {
-    return;
+function createTelegramHref(phone) {
+  const cleanedPhone = cleanPhone(phone);
+
+  return cleanedPhone ? `tg://resolve?phone=${cleanedPhone}` : "";
+}
+
+async function copyTextToClipboard(value) {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(value);
+      return;
+    } catch {
+      // Fallback below handles browsers that expose Clipboard API but deny it.
+    }
   }
 
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: name, ...payload });
+  const textarea = document.createElement("textarea");
+  textarea.value = value;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+}
 
-  if (typeof window.gtag === "function") {
-    window.gtag("event", name, payload);
-  }
-
-  if (typeof window.ym === "function" && window.__YANDEX_METRIKA_ID) {
-    window.ym(window.__YANDEX_METRIKA_ID, "reachGoal", name);
-  }
+function TelegramIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+      <path
+        d="M20.7 4.4 3.9 10.9c-1 .4-1 1.8.1 2.1l4.1 1.3 1.6 5c.3.9 1.5 1.1 2.1.4l2.3-2.8 4.3 3.1c.8.6 1.9.1 2.1-.9l2.5-13.3c.2-1-.8-1.8-1.8-1.4Zm-3.1 4.1-7 6.3-.4 2.4-.9-3.2 8.3-5.5Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
 }
 
 export function LeadForm({
-  source,
-  title,
-  subtitle,
-  buttonLabel,
-  eyebrow = "Заявка",
-  objectLabel = "Тип объекта",
-  objectPlaceholder = "Дом, теплица, гостиница, производство",
-  messagePlaceholder = "Площадь, тип отопления сейчас, стоимость кВт·ч, задачи по объекту",
-  footerText = "Отправляя форму, вы соглашаетесь на обратную связь по указанным контактам.",
-  successText = "Заявка отправлена. Мы свяжемся с вами с уточняющими вопросами по объекту.",
+  title = "Связаться с ВТС-ГРУПП",
+  subtitle = "Позвоните, напишите на email или откройте чат в Telegram. Мы уточним вводные и подскажем следующий шаг.",
+  eyebrow = "Контакты",
   contactInfo = defaultContactInfo,
 }) {
-  const pathname = usePathname();
-  const resolvedContactInfo =
-    contactInfo === false
-      ? null
-      : {
-          ...defaultContactInfo,
-          ...contactInfo,
-        };
-  const [status, setStatus] = useState("idle");
-  const [error, setError] = useState("");
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    objectType: "",
-    message: "",
-    website: "",
-  });
-
-  const onChange = (key, value) => {
-    setForm((current) => ({ ...current, [key]: value }));
+  const [copiedField, setCopiedField] = useState("");
+  const resetTimerRef = useRef(null);
+  const resolvedContactInfo = {
+    ...defaultContactInfo,
+    ...contactInfo,
   };
+  const phoneHref = `tel:+${cleanPhone(resolvedContactInfo.phone)}`;
+  const telegramHref = createTelegramHref(resolvedContactInfo.phone);
 
-  const onSubmit = async (event) => {
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current) {
+        window.clearTimeout(resetTimerRef.current);
+      }
+    };
+  }, []);
+
+  async function handleCopy(event, field, value) {
     event.preventDefault();
 
-    if (!form.name.trim() || !form.phone.trim()) {
-      setError("Укажите имя и телефон, чтобы мы могли связаться с вами.");
-      return;
+    await copyTextToClipboard(value);
+    setCopiedField(field);
+
+    if (resetTimerRef.current) {
+      window.clearTimeout(resetTimerRef.current);
     }
 
-    setStatus("submitting");
-    setError("");
-
-    try {
-      const params =
-        typeof window === "undefined"
-          ? new URLSearchParams()
-          : new URLSearchParams(window.location.search);
-
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
-          source,
-          page: pathname,
-          utm: {
-            utm_source: params.get("utm_source") || "",
-            utm_medium: params.get("utm_medium") || "",
-            utm_campaign: params.get("utm_campaign") || "",
-            utm_term: params.get("utm_term") || "",
-            utm_content: params.get("utm_content") || "",
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Не удалось отправить форму");
-      }
-
-      setStatus("success");
-      setForm({
-        name: "",
-        phone: "",
-        email: "",
-        objectType: "",
-        message: "",
-        website: "",
-      });
-
-      trackEvent("lead_submit", { source, page: pathname });
-    } catch (submitError) {
-      setStatus("error");
-      setError("Сейчас форма не отправилась. Попробуйте ещё раз или свяжитесь по телефону.");
-    }
-  };
+    resetTimerRef.current = window.setTimeout(() => {
+      setCopiedField("");
+    }, 1800);
+  }
 
   return (
-    <section className="lead-form-panel" id="lead-form">
-      <div>
+    <section className="lead-form-panel contact-showcase" id="contacts">
+      <div className="contact-showcase__copy">
         <span className="eyebrow">{eyebrow}</span>
         <h2>{title}</h2>
         <p>{subtitle}</p>
       </div>
 
-      <div className="lead-form__content">
-        <form className="lead-form" onSubmit={onSubmit}>
-          <input
-            type="text"
-            value={form.website}
-            onChange={(event) => onChange("website", event.target.value)}
-            className="hp-field"
-            tabIndex={-1}
-            autoComplete="off"
-          />
+      <aside className="lead-contact-info" aria-label="Контактная информация">
+        <div className="lead-contact-info__head">
+          <h3>{resolvedContactInfo.title}</h3>
+          <p>Выберите удобный канал связи.</p>
+        </div>
 
-          <div className="form-grid">
-            <label>
-              <span>Имя</span>
-              <input
-                type="text"
-                value={form.name}
-                onChange={(event) => onChange("name", event.target.value)}
-                placeholder="Как к вам обращаться"
-              />
-            </label>
-            <label>
-              <span>Телефон</span>
-              <input
-                type="text"
-                value={form.phone}
-                onChange={(event) => onChange("phone", event.target.value)}
-                placeholder="+7..."
-              />
-            </label>
-            <label>
-              <span>Email</span>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(event) => onChange("email", event.target.value)}
-                placeholder="mail@example.com"
-              />
-            </label>
-            <label>
-              <span>{objectLabel}</span>
-              <input
-                type="text"
-                value={form.objectType}
-                onChange={(event) => onChange("objectType", event.target.value)}
-                placeholder={objectPlaceholder}
-              />
-            </label>
-          </div>
-
-          <label>
-            <span>Комментарий</span>
-            <textarea
-              value={form.message}
-              onChange={(event) => onChange("message", event.target.value)}
-              placeholder={messagePlaceholder}
-            />
-          </label>
-
-          <div className="lead-form__footer">
-            <button className="btn btn--primary" type="submit" disabled={status === "submitting"}>
-              {status === "submitting" ? "Отправляем..." : buttonLabel}
-            </button>
-            <p>{footerText}</p>
-          </div>
-
-          {error ? <div className="form-message form-message--error">{error}</div> : null}
-          {status === "success" ? (
-            <div className="form-message form-message--success">{successText}</div>
+        <div className="contact-action-grid">
+          {telegramHref ? (
+            <a className="contact-action contact-action--telegram" href={telegramHref}>
+              <span className="contact-action__icon">
+                <TelegramIcon />
+              </span>
+              <span>
+                <strong>Telegram</strong>
+                <small>{resolvedContactInfo.phone}</small>
+              </span>
+            </a>
           ) : null}
-        </form>
 
-        {resolvedContactInfo ? (
-          <aside className="lead-contact-info" aria-label="Контактная информация">
-            <h3>{resolvedContactInfo.title}</h3>
+          <a
+            className={`contact-action${copiedField === "phone" ? " contact-action--copied" : ""}`}
+            href={phoneHref}
+            onClick={(event) => handleCopy(event, "phone", resolvedContactInfo.phone)}
+          >
+            <span className="contact-action__label">
+              {copiedField === "phone" ? "Скопировано" : "Телефон"}
+            </span>
+            <strong>{resolvedContactInfo.phone}</strong>
+          </a>
+
+          <a
+            className={`contact-action${copiedField === "email" ? " contact-action--copied" : ""}`}
+            href={`mailto:${resolvedContactInfo.email}`}
+            onClick={(event) => handleCopy(event, "email", resolvedContactInfo.email)}
+          >
+            <span className="contact-action__label">
+              {copiedField === "email" ? "Скопировано" : "Email"}
+            </span>
+            <strong>{resolvedContactInfo.email}</strong>
+          </a>
+        </div>
+
+        <div className="lead-contact-info__meta">
+          {resolvedContactInfo.address ? (
+            <button
+              className={copiedField === "address" ? "is-copied" : ""}
+              type="button"
+              onClick={(event) => handleCopy(event, "address", resolvedContactInfo.address)}
+            >
+              <span>{copiedField === "address" ? "Скопировано" : "Адрес"}</span>
+              <p>{resolvedContactInfo.address}</p>
+            </button>
+          ) : null}
+          {resolvedContactInfo.hours ? (
             <div>
-              <span>Телефон</span>
-              <a href={`tel:${cleanPhone(resolvedContactInfo.phone)}`}>
-                {resolvedContactInfo.phone}
-              </a>
-              {(resolvedContactInfo.secondaryPhones || []).map((phone) => (
-                <a href={`tel:${cleanPhone(phone)}`} key={phone}>
-                  {phone}
-                </a>
-              ))}
+              <span>Режим</span>
+              <p>{resolvedContactInfo.hours}</p>
             </div>
-            <div>
-              <span>Email</span>
-              <a href={`mailto:${resolvedContactInfo.email}`}>{resolvedContactInfo.email}</a>
-            </div>
-            {resolvedContactInfo.whatsapp || resolvedContactInfo.telegram || resolvedContactInfo.max ? (
-              <div>
-                <span>Мессенджеры</span>
-                {resolvedContactInfo.whatsapp ? (
-                  <a href={`https://wa.me/${cleanPhone(resolvedContactInfo.whatsapp)}`}>
-                    WhatsApp
-                  </a>
-                ) : null}
-                {resolvedContactInfo.telegram ? (
-                  <a href={`https://t.me/${String(resolvedContactInfo.telegram).replace("@", "")}`}>
-                    Telegram
-                  </a>
-                ) : null}
-                {resolvedContactInfo.max ? (
-                  <a href={resolvedContactInfo.max}>
-                    MAX
-                  </a>
-                ) : null}
-              </div>
-            ) : null}
-            {resolvedContactInfo.address ? <p>{resolvedContactInfo.address}</p> : null}
-            {resolvedContactInfo.hours ? <small>{resolvedContactInfo.hours}</small> : null}
-          </aside>
-        ) : null}
-      </div>
+          ) : null}
+        </div>
+
+        <Link className="lead-contact-info__subtle-link" href="/bearings">
+          Подшипники
+        </Link>
+      </aside>
     </section>
   );
 }

@@ -348,19 +348,6 @@ export function AdminDashboard() {
                 />
               </label>
               <label>
-                <span>BTC курс, ₽</span>
-                <input
-                  type="number"
-                  value={content.calculatorDefaults.btcRate}
-                  onChange={(event) =>
-                    updateContentValue(
-                      "calculatorDefaults.btcRate",
-                      Number(event.target.value)
-                    )
-                  }
-                />
-              </label>
-              <label>
                 <span>Мощность, кВт</span>
                 <input
                   type="number"
@@ -387,20 +374,7 @@ export function AdminDashboard() {
                 />
               </label>
               <label>
-                <span>BTC / TH / сутки</span>
-                <input
-                  type="number"
-                  value={content.calculatorDefaults.btcPerThDay}
-                  onChange={(event) =>
-                    updateContentValue(
-                      "calculatorDefaults.btcPerThDay",
-                      Number(event.target.value)
-                    )
-                  }
-                />
-              </label>
-              <label>
-                <span>КПД тепла</span>
+                <span>КПД утилизации тепла</span>
                 <input
                   type="number"
                   value={content.calculatorDefaults.heatEfficiency}
