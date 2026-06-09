@@ -57,5 +57,15 @@ jobs:
           docker compose up -d --build
           docker image prune -f
           docker compose ps
-          curl -fsS -I http://localhost:3000
+
+          for attempt in $(seq 1 30); do
+            if curl -fsS -I http://localhost:3000; then
+              exit 0
+            fi
+            echo "Waiting for app to become ready... attempt ${attempt}/30"
+            sleep 2
+          done
+
+          echo "App did not become ready on http://localhost:3000"
+          exit 1
           EOF
