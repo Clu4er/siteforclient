@@ -45,6 +45,12 @@ npm run build
 npm run start
 ```
 
+## Deployment
+
+Docker-деплой на Ubuntu VM в Cloud.ru описан в [DEPLOY.md](DEPLOY.md).
+
+Для обычных последующих деплоев новая ветка не нужна: после merge в `main` сервер обновляется командами `git pull origin main` и `docker compose up -d --build`.
+
 ## Переменные окружения
 
 В проекте используется `.env.example` как шаблон. Настоящие секреты в Git не коммитим.
