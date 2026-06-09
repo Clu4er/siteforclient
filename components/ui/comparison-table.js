@@ -9,8 +9,8 @@ export function ComparisonTable({ leftTitle, rightTitle, rows }) {
       {rows.map((row) => (
         <div className="comparison-table__row" key={row.criterion}>
           <strong>{row.criterion}</strong>
-          <p>{row.left}</p>
-          <p>{row.right}</p>
+          <p data-label={leftTitle}>{row.left}</p>
+          <p data-label={rightTitle}>{row.right}</p>
         </div>
       ))}
     </div>

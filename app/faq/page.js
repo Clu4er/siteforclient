@@ -32,7 +32,7 @@ const faqCategories = [
   },
   {
     title: "Сегменты и сценарии",
-    text: "Дом, бизнес, теплица, GPU, гостиница, сервисный объект и производственные сценарии.",
+    text: "Дом, бизнес, теплица, ГПУ, гостиница, сервисный объект и производственные сценарии.",
   },
 ];
 
@@ -60,11 +60,14 @@ export default async function FaqPage() {
             <Breadcrumbs items={breadcrumbs} />
             <div className="page-hero__copy page-hero__copy--wide">
               <span className="eyebrow">FAQ</span>
-              <h1>FAQ по криптокотлам и отоплению на базе майнинга</h1>
+              <h1>
+                FAQ по <span className="text-highlight">криптокотлам</span> и
+                отоплению на базе майнинга
+              </h1>
               <p>
-                Мы убрали декоративные вопросы и оставили те, которые реально мешают
-                принять решение. Эта страница работает и как SEO-вход, и как блок
-                снижения сомнений перед заявкой.
+                Здесь собраны ответы на вопросы, которые обычно появляются до расчёта:
+                как подключается оборудование, насколько оно шумит, что происходит
+                летом и почему калькулятор не является обещанием доходности.
               </p>
             </div>
           </div>
@@ -74,8 +77,13 @@ export default async function FaqPage() {
           <div className="shell">
             <SectionHeading
               eyebrow="Что здесь внутри"
-              title="Вопросы сгруппированы вокруг того, что действительно влияет на решение"
-              description="Когда FAQ отвечает на реальные возражения, он лучше работает и на UX, и на коммерческую конверсию."
+              title={
+                <>
+                  Коротко о <span className="text-highlight">главном</span> перед
+                  заявкой
+                </>
+              }
+              description="Мы отвечаем простым языком: про подключение, расчёт, шум, сезонность и сценарии для разных объектов."
             />
             <div className="feature-grid feature-grid--3">
               {faqCategories.map((item) => (
@@ -111,9 +119,9 @@ export default async function FaqPage() {
             <PageCta
               title="Остались вопросы по вашему объекту?"
               text="Отправьте короткое описание объекта или текущей схемы отопления. Мы ответим предметно, а не общими фразами."
-              primaryHref="/kontakty#lead-form"
+              primaryHref="/contacts"
               primaryLabel="Задать вопрос"
-              secondaryHref="/kalkulyator"
+              secondaryHref="/calculator"
               secondaryLabel="Перейти в калькулятор"
             />
           </div>
