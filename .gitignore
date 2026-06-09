@@ -10,6 +10,10 @@ dist/
 .env.production
 .env.*.local
 
+# Local SSH keys
+pem/
+*.pem
+
 *.zip
 *.rar
 *.7z

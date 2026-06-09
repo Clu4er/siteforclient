@@ -1,105 +1,134 @@
-# Деплой Next.js через Docker на Ubuntu VM в Cloud.ru
+# Deploy
 
-Эта инструкция описывает простой production-деплой на одной Ubuntu VM: сервер клонирует Git-репозиторий, запускает Next.js через Docker Compose, а Nginx проксирует домен на контейнер `next-app` на `127.0.0.1:3000`.
+Production runs on a Cloud.ru Ubuntu VM with Docker Compose, Nginx, and Certbot.
 
-Не нужны Kubernetes, Container Registry, CI/CD или Cloud.ru Container Apps.
+- Domain: `techno-comfort.pro`
+- WWW domain: `www.techno-comfort.pro`
+- Server IP: `95.174.92.90`
+- SSH user: `user1`
+- Server path: `/var/www/siteforclient`
+- Docker service/container: `next-app`
+- Production branch: `main`
+- Development branch: `dev`
+- Workflow: `.github/workflows/deploy.yml`
 
-## A. Подготовка сервера
+Do not commit `.env.production`, `.env.local`, `.pem`, passwords, tokens, or private keys.
 
-Обновите пакеты и установите базовые инструменты:
+## Cloud.ru Security Group
+
+The VM needs inbound access:
+
+- TCP `80` from `0.0.0.0/0`
+- TCP `443` from `0.0.0.0/0`
+- TCP `22` for SSH, ideally restricted to the owner's IP
+
+The Ubuntu firewall can be checked with:
+
+```bash
+sudo ufw status
+```
+
+Cloud.ru security group rules must be checked in the Cloud.ru panel.
+
+## Server Preparation
+
+Install base packages:
 
 ```bash
 sudo apt update
+sudo apt upgrade -y
 sudo apt install -y git curl nginx certbot python3-certbot-nginx ca-certificates
 ```
 
-Установите Docker и Docker Compose plugin:
+Install Docker and Compose on Ubuntu 22.04:
 
 ```bash
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/keyrings/docker.asc > /dev/null
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-
-Включите Docker:
-
-```bash
-sudo systemctl enable docker
-sudo systemctl start docker
-sudo docker --version
-sudo docker compose version
-```
-
-Чтобы запускать Docker без `sudo`, добавьте пользователя в группу `docker`, затем перелогиньтесь:
-
-```bash
+sudo apt install -y docker.io docker-compose-v2
+sudo systemctl enable --now docker
 sudo usermod -aG docker $USER
 ```
 
-## B. Клонирование репозитория
+Log out and back in after `usermod`, then verify:
 
 ```bash
-cd /var/www
-git clone <REPO_URL>
-cd <PROJECT_DIR>
+docker --version
+docker compose version
 ```
 
-Замените `<REPO_URL>` на URL Git-репозитория, а `<PROJECT_DIR>` на имя папки проекта.
+## Initial Clone
 
-## C. Настройка env
-
-Создайте production env-файл из шаблона:
+Production should use `main`:
 
 ```bash
+sudo mkdir -p /var/www
+sudo chown -R $USER:$USER /var/www
+cd /var/www
+git clone -b main https://github.com/Clu4er/siteforclient.git
+cd siteforclient
+```
+
+During the first Docker migration only, the server may temporarily run `deploy/docker-setup-clean`.
+
+## Production Env
+
+Create the env file on the server only:
+
+```bash
+cd /var/www/siteforclient
 cp .env.example .env.production
+chmod 600 .env.production
 nano .env.production
 ```
 
-Реальные секреты вводятся только на сервере в `.env.production`. Не коммитьте `.env`, `.env.local` и `.env.production` в Git.
+Minimum production values:
 
-Нужно заполнить:
-
-- `NEXT_PUBLIC_SITE_URL` - публичный URL сайта, например `https://example.com`
-- `NEXT_PUBLIC_GA_ID` - ID Google Analytics / GA4, если используется
-- `NEXT_PUBLIC_YANDEX_METRIKA_ID` - ID Яндекс Метрики, если используется
-- `TELEGRAM_BOT_TOKEN` - токен Telegram-бота для заявок, если используется
-- `TELEGRAM_CHAT_ID` - чат для отправки заявок, если используется
-- `ADMIN_PASSWORD` - пароль админ-панели
-- `ADMIN_SESSION_SECRET` - длинная случайная строка для подписи сессий
-
-## D. Первый запуск
-
-```bash
-docker compose build
-docker compose up -d
-docker ps
-curl http://localhost:3000
+```env
+NEXT_PUBLIC_SITE_URL=https://techno-comfort.pro
+NEXT_PUBLIC_GA_ID=
+NEXT_PUBLIC_YANDEX_METRIKA_ID=
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+ADMIN_PASSWORD=change-me-now
+ADMIN_SESSION_SECRET=<generate-with-openssl-rand-hex-32>
 ```
 
-Если `curl` возвращает HTML-страницу, контейнер Next.js запущен корректно.
-
-## E. Nginx reverse proxy
-
-Создайте конфиг Nginx:
+Generate a session secret:
 
 ```bash
-sudo nano /etc/nginx/sites-available/<PROJECT_DIR>
+openssl rand -hex 32
 ```
 
-Пример конфига:
+Replace `ADMIN_PASSWORD` with a real strong password before handing the admin panel to users.
+
+## Docker Deploy
+
+```bash
+cd /var/www/siteforclient
+docker compose up -d --build
+docker compose ps
+curl -I http://localhost:3000
+curl http://localhost:3000/robots.txt
+curl http://localhost:3000/sitemap.xml
+```
+
+`robots.txt` and `sitemap.xml` must use `https://techno-comfort.pro`, not `localhost`.
+
+`NEXT_PUBLIC_SITE_URL` is also passed as a Docker build argument in `docker-compose.yml`, because Next.js prerenders `robots.txt` and `sitemap.xml` during `next build`. If the production domain changes, update both `.env.production` on the server and the Docker build default in `docker-compose.yml`.
+
+## Nginx
+
+Config path:
+
+```bash
+/etc/nginx/sites-available/siteforclient
+```
+
+HTTP config before Certbot:
 
 ```nginx
 server {
     listen 80;
-    server_name example.com www.example.com;
+    server_name 95.174.92.90 techno-comfort.pro www.techno-comfort.pro;
 
     location / {
         proxy_pass http://127.0.0.1:3000;
@@ -116,90 +145,122 @@ server {
 }
 ```
 
-Активируйте сайт:
+Enable and reload:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/<PROJECT_DIR> /etc/nginx/sites-enabled/<PROJECT_DIR>
-sudo rm -f /etc/nginx/sites-enabled/default
-```
-
-## F. Проверка Nginx
-
-```bash
+sudo ln -sfn /etc/nginx/sites-available/siteforclient /etc/nginx/sites-enabled/siteforclient
 sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-## G. Домен
+## HTTPS
 
-В DNS панели домена добавьте записи:
-
-- `A` record `@ -> SERVER_IP`
-- `A` record `www -> SERVER_IP`
-
-Замените `SERVER_IP` на публичный IP сервера Cloud.ru.
-
-## H. HTTPS
-
-После того как DNS указывает на сервер, выпустите сертификат:
+Run Certbot only after DNS points to `95.174.92.90` and ports `80` and `443` are open:
 
 ```bash
-sudo certbot --nginx -d example.com -d www.example.com
+sudo certbot --nginx -d techno-comfort.pro -d www.techno-comfort.pro
 sudo certbot renew --dry-run
 ```
 
-Замените `example.com` и `www.example.com` на реальные домены.
+Choose HTTP to HTTPS redirect if Certbot asks.
 
-## I. Как обновлять сайт после изменений
-
-Для обычных последующих деплоев новую ветку создавать не нужно.
-
-Сервер всегда берет актуальный код из `main`. Ветки нужны только для разработки изменений или крупных правок. После merge в `main` сервер обновляется через `git pull`.
-
-Команды для обновления:
+Verify:
 
 ```bash
-cd /var/www/<PROJECT_DIR>
-git pull origin main
+curl -I https://techno-comfort.pro
+curl -I https://www.techno-comfort.pro
+curl -I http://techno-comfort.pro
+curl -I http://www.techno-comfort.pro
+```
+
+Expected:
+
+- HTTPS returns the site.
+- HTTP redirects to HTTPS.
+- Certificate is valid for both names.
+
+## Automatic Deploy Through GitHub Actions
+
+Workflow file:
+
+```text
+.github/workflows/deploy.yml
+```
+
+Required GitHub Secrets:
+
+```text
+CLOUDRU_HOST=95.174.92.90
+CLOUDRU_USER=user1
+CLOUDRU_PROJECT_PATH=/var/www/siteforclient
+CLOUDRU_SSH_KEY=<private deploy SSH key>
+```
+
+Prefer a dedicated deploy key:
+
+1. Generate a new SSH key for GitHub Actions.
+2. Add the public key to `/home/user1/.ssh/authorized_keys` on the VM.
+3. Add the private key to GitHub Secrets as `CLOUDRU_SSH_KEY`.
+4. Do not commit the key to the repository.
+
+The workflow runs on push to `main` and executes:
+
+```bash
+cd "$CLOUDRU_PROJECT_PATH"
+git fetch origin main
+git checkout main
+git pull --ff-only origin main
 docker compose up -d --build
 docker image prune -f
+docker compose ps
+curl -fsS -I http://localhost:3000
 ```
 
-## J. Если сайт не открывается
-
-Проверьте контейнер, логи, локальный ответ Next.js, Nginx и Git-состояние:
+## Manual Deploy
 
 ```bash
-docker ps
-docker logs next-app
-docker compose logs -f
-curl http://localhost:3000
-sudo nginx -t
-sudo systemctl status nginx
-sudo ss -tulpn | grep -E '80|443|3000'
-git status
-git log --oneline -5
+ssh user1@95.174.92.90 -i "C:\test\siteforclient\pem\siteforclient-prod.pem"
+cd /var/www/siteforclient
+git fetch origin main
+git checkout main
+git pull --ff-only origin main
+docker compose up -d --build
+docker image prune -f
+docker compose ps
+curl -I http://localhost:3000
+curl -I https://techno-comfort.pro
+curl -I https://www.techno-comfort.pro
 ```
 
-## K. Откат
-
-Посмотрите последние коммиты:
+## Rollback
 
 ```bash
-git log --oneline -5
-```
-
-Временно откатитесь на предыдущий коммит и пересоберите контейнер:
-
-```bash
-git checkout <COMMIT_HASH>
+cd /var/www/siteforclient
+git log --oneline -10
+git checkout <GOOD_COMMIT_HASH>
 docker compose up -d --build
 ```
 
-После исправления вернитесь на `main`:
+Return to production after the fix:
 
 ```bash
 git checkout main
 git pull origin main
 docker compose up -d --build
 ```
+
+## Future Work Flow
+
+1. Work in `dev`.
+2. Test locally:
+
+```bash
+npm ci
+npm run build
+```
+
+3. Commit and push `dev`.
+4. Open PR from `dev` to `main`.
+5. Merge into `main`.
+6. GitHub Actions deploys production automatically.
+7. Verify `https://techno-comfort.pro` and `https://www.techno-comfort.pro`.

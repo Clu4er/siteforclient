@@ -1,152 +1,84 @@
-# BTC-ГРУПП / siteforclient
+# siteforclient
 
-Next.js-проект коммерческого сайта про криптокотлы, отопление на базе майнинга, сравнение сценариев, калькулятор и отдельную страницу подшипникового направления.
+Next.js App Router project for the Techno Comfort commercial site.
 
-## Что внутри
+## Local Development
 
-- Next.js App Router
-- SEO-страницы под основные сценарии
-- Калькулятор экономики отопления
-- Контактные формы и задел под дальнейшую интеграцию
-- Динамические `robots.txt` и `sitemap.xml`
+Use the `dev` branch for normal work.
 
-## Локальный запуск
-
-Требования:
-
-- Node.js 18+ или новее
-- npm
-
-Установка зависимостей:
-
-```powershell
-npm install
-```
-
-Запуск dev-сервера:
-
-```powershell
+```bash
+npm ci
 npm run dev
 ```
 
-По умолчанию сайт будет доступен на `http://localhost:3000`.
+Default local URL:
 
-## Production build
+```text
+http://localhost:3000
+```
 
-Сборка production-версии:
+Production build check:
 
-```powershell
+```bash
 npm run build
 ```
 
-Локальный запуск production-сборки:
+## Branches
 
-```powershell
-npm run start
+- `dev` - development and content work
+- `main` - production branch
+- `deploy/docker-setup-clean` - temporary Docker migration branch
+
+Do not work directly in `main` unless it is an urgent production hotfix.
+
+## Production
+
+Production runs on a Cloud.ru VM.
+
+- Domain: `techno-comfort.pro`
+- WWW domain: `www.techno-comfort.pro`
+- Server IP: `95.174.92.90`
+- Server path: `/var/www/siteforclient`
+- Docker service/container: `next-app`
+- Deployment docs: `DEPLOY.md`
+- Project handoff context: `PROJECT_CONTEXT.md`
+
+The production flow is:
+
+```text
+dev -> PR -> main -> GitHub Actions -> Cloud.ru VM -> Docker Compose -> Nginx -> Certbot HTTPS
 ```
 
 ## Deployment
 
-Docker-деплой на Ubuntu VM в Cloud.ru описан в [DEPLOY.md](DEPLOY.md).
+Manual and automatic deployment instructions are in `DEPLOY.md`.
 
-Для обычных последующих деплоев новая ветка не нужна: после merge в `main` сервер обновляется командами `git pull origin main` и `docker compose up -d --build`.
+Automatic deploy uses:
 
-## Переменные окружения
+```text
+.github/workflows/deploy.yml
+```
 
-В проекте используется `.env.example` как шаблон. Настоящие секреты в Git не коммитим.
+Required GitHub Secrets:
 
-Минимально важные переменные:
+- `CLOUDRU_HOST`
+- `CLOUDRU_USER`
+- `CLOUDRU_SSH_KEY`
+- `CLOUDRU_PROJECT_PATH`
 
-- `NEXT_PUBLIC_SITE_URL` — основной URL сайта
-- `NEXT_PUBLIC_YANDEX_METRIKA_ID` — ID Яндекс Метрики
-- `NEXT_PUBLIC_GA_ID` — ID Google Analytics / GA4
-- `TELEGRAM_BOT_TOKEN` — токен Telegram-бота для форм
-- `TELEGRAM_CHAT_ID` — чат для отправки заявок
+Never commit `.env.production`, `.env.local`, `.pem` files, passwords, tokens, or private keys.
 
-Для локальной работы создаётся `.env.local` на основе `.env.example`.
+## Recovery
 
-## Git workflow
+If the local workspace is deleted:
 
-Рекомендуемая схема веток:
+```bash
+git clone https://github.com/Clu4er/siteforclient.git
+cd siteforclient
+git checkout dev
+git pull origin dev
+npm ci
+npm run dev
+```
 
-- `main` — production
-- `dev` — тестовая интеграционная ветка
-- `feature/*` — отдельные задачи
-- `hotfix/*` — срочные исправления production
-
-Правило работы:
-
-1. Не пушить правки напрямую в `main`.
-2. Создавать рабочую ветку от `dev` или `main` в зависимости от процесса.
-3. Пушить ветку в GitHub.
-4. Проверять Vercel Preview.
-5. После согласования делать merge.
-6. Только `main` должен обновлять production.
-
-## Vercel preview и production
-
-Рекомендуемая схема:
-
-- `main` -> production deployment
-- `dev` -> preview / staging
-- `feature/*` -> preview deployment для согласования
-
-Что это даёт:
-
-- после каждого `git push` в ветку Vercel собирает отдельный preview URL
-- preview-ссылку можно отправлять заказчику
-- после merge в `main` production обновляется автоматически
-
-## Подключение домена через Reg.ru
-
-Общий порядок:
-
-1. Загрузить проект в private GitHub repository.
-2. Подключить репозиторий в Vercel.
-3. В Vercel открыть `Project -> Settings -> Domains`.
-4. Добавить основной домен и `www`.
-5. В панели Reg.ru прописать DNS-записи, которые покажет Vercel.
-
-Типовой ориентир:
-
-- для корневого домена: `A` запись `@ -> 76.76.21.21`
-- для `www`: `CNAME` запись `www -> cname.vercel-dns.com`
-
-Перед внесением DNS всегда сверять значения с тем, что показывает сам Vercel в разделе `Domains`.
-
-## Индексация и SEO
-
-В проекте уже есть базовые SEO-механики:
-
-- metadata для страниц
-- canonical
-- Open Graph
-- `app/robots.js`
-- `app/sitemap.js`
-- schema.org на ключевых страницах
-
-Как открывать индексацию:
-
-1. Сначала подготовить контент и production-домен.
-2. Установить `NEXT_PUBLIC_SITE_URL` в production на реальный домен.
-3. Проверить, что `robots.txt` и `sitemap.xml` открываются корректно.
-4. Убедиться, что preview/dev не индексируются.
-5. После этого отправлять сайт в индекс поисковиков.
-
-## Как вносить правки дальше
-
-Если нужно поменять текст, блок, картинку, калькулятор или страницу:
-
-1. Создать ветку `feature/...`
-2. Внести изменения локально
-3. Проверить `npm run build`
-4. Выполнить `git push`
-5. Открыть Vercel Preview
-6. Отправить preview-ссылку заказчику
-7. После согласования сделать merge
-
-## Важное по публикации
-
-- Репозиторий на GitHub должен быть `private`
-- Нельзя коммитить `.env`, `node_modules`, `.next`, архивы и временные файлы
-- Если в локальной Git-истории уже есть архивы или лишние крупные файлы, перед первым push лучше отдельно очистить историю безопасным способом
+Read `PROJECT_CONTEXT.md` and `DEPLOY.md` before production work.

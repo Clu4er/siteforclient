@@ -1,7 +1,10 @@
 services:
   next-app:
     container_name: next-app
-    build: .
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://techno-comfort.pro}
     restart: unless-stopped
     ports:
       - "3000:3000"

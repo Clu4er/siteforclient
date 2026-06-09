@@ -1,0 +1,61 @@
+name: Deploy to Cloud.ru VM
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy production
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Configure SSH
+        env:
+          CLOUDRU_HOST: ${{ secrets.CLOUDRU_HOST }}
+          CLOUDRU_SSH_KEY: ${{ secrets.CLOUDRU_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDRU_HOST"
+          test -n "$CLOUDRU_SSH_KEY"
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$CLOUDRU_SSH_KEY" > ~/.ssh/cloudru_deploy_key
+          chmod 600 ~/.ssh/cloudru_deploy_key
+          ssh-keyscan -H "$CLOUDRU_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy on server
+        env:
+          CLOUDRU_HOST: ${{ secrets.CLOUDRU_HOST }}
+          CLOUDRU_USER: ${{ secrets.CLOUDRU_USER }}
+          CLOUDRU_PROJECT_PATH: ${{ secrets.CLOUDRU_PROJECT_PATH }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDRU_HOST"
+          test -n "$CLOUDRU_USER"
+          test -n "$CLOUDRU_PROJECT_PATH"
+
+          ssh -i ~/.ssh/cloudru_deploy_key \
+            -o BatchMode=yes \
+            -o IdentitiesOnly=yes \
+            "$CLOUDRU_USER@$CLOUDRU_HOST" \
+            "CLOUDRU_PROJECT_PATH='$CLOUDRU_PROJECT_PATH' bash -s" <<'EOF'
+          set -euo pipefail
+
+          cd "$CLOUDRU_PROJECT_PATH"
+          git fetch origin main
+          git checkout main
+          git pull --ff-only origin main
+
+          docker compose up -d --build
+          docker image prune -f
+          docker compose ps
+          curl -fsS -I http://localhost:3000
+          EOF
